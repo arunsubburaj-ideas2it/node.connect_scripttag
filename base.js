@@ -1,6 +1,3 @@
-var checkoutNote = `{{checkout.note}}`;
-console.log({ checkoutNote });
-
 var css = `
 #nodeInstallBtn {
   background-image: url("https://cdn.shopify.com/s/files/1/0734/3479/2254/files/node_icon_0540adb3-be04-401e-82a2-07bbdb8a4024_480x480.png?v=1683286464");
@@ -41,7 +38,22 @@ setTimeout(function () {
     },
     "*"
   );
-}, 750);
+  var isCreatedFromNode =
+    window.sessionStorage.getItem("buyAgainObj")?.length > 0;
+  if (isCreatedFromNode) {
+    const buyAgainObj = JSON.parse(
+      window.sessionStorage.getItem("buyAgainObj")
+    );
+    const checkoutObj = Shopify?.checkout;
+    if (buyAgainObj && checkoutObj) {
+      const interactionInstance = new NodeInteractions(
+        checkoutObj,
+        buyAgainObj
+      );
+      interactionInstance.update();
+    }
+  }
+}, 350);
 window.addEventListener("message", (event) => {
   if (event?.data?.type == "nodeAvailable") {
     console.log("Node Available");
