@@ -41,6 +41,7 @@ setTimeout(function () {
   var isCreatedFromNode =
     window.sessionStorage.getItem("buyAgainObj")?.length > 0;
   if (isCreatedFromNode) {
+    updateBuyAgainObj()
     const buyAgainObj = JSON.parse(
       window.sessionStorage.getItem("buyAgainObj")
     );
@@ -65,6 +66,28 @@ window.addEventListener("message", (event) => {
     }
   }
 });
+function updateBuyAgainObj(){
+  var buyAgainString = window.sessionStorage.getItem("buyAgainObj");
+  var buyAgainObj = JSON.parse(buyAgainString);
+  var buyAgainURL = buyAgainObj?.URL;
+  var cipherData = buyAgainURL.split("buy-again?")[1];
+  var bytes = CryptoJS.AES.decrypt(cipherData, "node-buy-again");
+  var decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+  console.log(decryptedData);
+  var decryptedObj = JSON.parse(decryptedData);
+  console.log(decryptedObj);
+  decryptedObj["orderId"] = Shopify.checkout.order_id;
+  console.log(decryptedObj);
+  var encryptedOrderData = CryptoJS.AES.encrypt(
+      JSON.stringify(decryptedObj),
+      "node-buy-again"
+    ).toString();
+  var buyAgainURI = `${buyAgainURL.split("buy-again?")[0]}buy-again?${encryptedOrderData}`;
+  console.log(buyAgainURI);
+  buyAgainObj["URL"]=buyAgainURI;
+  console.log(buyAgainObj)
+  window.sessionStorage.setItem("buyAgainObj",buyAgainObj);
+}
 function installApp() {
   window.location.href = "https://testflight.apple.com/join/L5KE67vq";
 }
