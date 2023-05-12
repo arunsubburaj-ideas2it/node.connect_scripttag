@@ -86,7 +86,7 @@ function updateBuyAgainObj(){
   console.log(buyAgainURI);
   buyAgainObj["URL"]=buyAgainURI;
   console.log(buyAgainObj)
-  window.sessionStorage.setItem("buyAgainObj",buyAgainObj);
+  window.sessionStorage.setItem("buyAgainObj",JSON.stringify(buyAgainObj));
 }
 function installApp() {
   window.location.href = "https://testflight.apple.com/join/L5KE67vq";
