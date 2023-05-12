@@ -52,6 +52,8 @@ setTimeout(function () {
         buyAgainObj
       );
       interactionInstance.update();
+      window.sessionStorage.removeItem("buyAgainObj");
+      window.sessionStorage.removeItem("couponCode");
     }
   }
 }, 350);
