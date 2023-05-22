@@ -1,15 +1,21 @@
 var css = `
-#nodeInstallBtn {
-  background-image: url("https://cdn.shopify.com/s/files/1/0734/3479/2254/files/node_icon_0540adb3-be04-401e-82a2-07bbdb8a4024_480x480.png?v=1683286464");
+#nodeInstallWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#nodeInstallWrapper .nodeIcon {
+  background-image: url("https://cdn.shopify.com/s/files/1/0764/8424/7843/files/node_icon_7ea198d0-732c-4b5f-bbd1-3763b481be6b_480x480.png?v=1684781028");
   background-repeat: no-repeat;
+  background-size: cover;
   background-position: center;
-  background-size: contain;
-  width: 60px;
+  width: 109px;
   height: 60px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-left: 50px;
-  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.5);
+}
+#nodeInstallWrapper .actionBtns{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }`;
 var head = document.head || document.getElementsByTagName("head")[0];
 var style = document.createElement("style");
@@ -24,11 +30,16 @@ if (style.styleSheet) {
 }
 
 Shopify.Checkout.OrderStatus
-  .addContentBox(`<div style="text-align: center; display: flex;
-  justify-content: center; align-items: center;">
-  Install Node. from here.
-  <button onClick="installApp()" id="nodeInstallBtn">
-  </div>`);
+  .addContentBox(`<div id="nodeInstallWrapper">
+      <div class="nodeIcon"></div>
+      <div>One-click. Never type. In your pocket.</div>
+      <div>Protect against spam and phishing.</div>
+      <div>Privacy is <strong>your choice.</strong></div>
+      <div class="actionBtns">
+        <button id="deepLink" onClick="installApp()" title="Download node.">Download node.</button>
+        <button id="learnMore" disabled title="Learn more">Learn more</button>
+      </div>
+    </div>`);
 var isNodeAvailable = false;
 setTimeout(function () {
   window.postMessage(
@@ -74,7 +85,7 @@ window.addEventListener("message", (event) => {
     console.log("Node Available");
     var nodeContentBox = Array.from(
       document.querySelectorAll(".content-box")
-    ).filter((currentEle) => currentEle.textContent.includes("Install Node."));
+    ).filter((currentEle) => currentEle.textContent.includes("Download node."));
     if (nodeContentBox.length > 0) {
       nodeContentBox[0].remove();
     }
