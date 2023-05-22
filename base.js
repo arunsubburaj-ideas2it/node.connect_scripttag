@@ -3,6 +3,7 @@ var css = `
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 #nodeInstallWrapper .nodeIcon {
   background-image: url("https://cdn.shopify.com/s/files/1/0764/8424/7843/files/node_icon_7ea198d0-732c-4b5f-bbd1-3763b481be6b_480x480.png?v=1684781028");
@@ -14,9 +15,26 @@ var css = `
 }
 #nodeInstallWrapper .actionBtns{
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
-}`;
+  width: 100%;
+  margin: 20px;
+}
+div#nodeInstallWrapper>div {
+  margin: 3px;
+}
+#nodeInstallWrapper strong {
+  font-weight: bold;
+  color: #000;
+}
+#nodeInstallWrapper .actionBtns>button {
+  color: #1773b0;
+  font-weight: bold;
+}
+#nodeInstallWrapper .actionBtns>button[disabled] {
+  color: #919191;
+}
+`;
 var head = document.head || document.getElementsByTagName("head")[0];
 var style = document.createElement("style");
 var appUrl="https://testflight.apple.com/join/L5KE67vq";
