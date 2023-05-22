@@ -4,8 +4,8 @@ class NodeInteractions {
     this.buyAgainData = buyAgainData;
   }
 
-  update() {
-    const payload = {
+  generatePayload() {
+    return {
       transactionName: "payment",
       merchant_url: location.origin,
       transactionSubName: "payment",
@@ -46,7 +46,9 @@ class NodeInteractions {
       },
       messageVersion: null,
     };
-
+  }
+  update() {
+    const payload = this.generatePayload();
     window.postMessage(
       {
         type: "iOMDPayInteraction",
@@ -54,9 +56,17 @@ class NodeInteractions {
       },
       "*"
     );
-    // debugger;
     console.log("new interactionPayload", payload);
+  }
 
+  generateDeepLink(appUrl) {
+    var payload = this.generatePayload();
+    var payloadString = JSON.stringify(payload);
+    var encryptedOrderData = CryptoJS.AES.encrypt(
+      payloadString,
+      "node-deep-link"
+    ).toString();
+    return appUrl + "?id=" + encryptedOrderData;
   }
 
   generateInteractionProductData() {
