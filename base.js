@@ -13,7 +13,7 @@ var css = `
 }`;
 var head = document.head || document.getElementsByTagName("head")[0];
 var style = document.createElement("style");
-var appUrl;
+var appUrl="https://testflight.apple.com/join/L5KE67vq";
 head.appendChild(style);
 
 if (style.styleSheet) {
