@@ -13,7 +13,7 @@ var css = `
 }`;
 var head = document.head || document.getElementsByTagName("head")[0];
 var style = document.createElement("style");
-
+var appUrl;
 head.appendChild(style);
 
 if (style.styleSheet) {
@@ -41,7 +41,7 @@ setTimeout(function () {
   var isCreatedFromNode =
     window.sessionStorage.getItem("buyAgainObj")?.length > 0;
   if (isCreatedFromNode) {
-    updateBuyAgainObj()
+    updateBuyAgainObj();
     const buyAgainObj = JSON.parse(
       window.sessionStorage.getItem("buyAgainObj")
     );
@@ -51,6 +51,8 @@ setTimeout(function () {
         checkoutObj,
         buyAgainObj
       );
+      appUrl = interactionInstance.generateDeepLink(appUrl);
+      console.log({appUrl});
       interactionInstance.update();
       window.sessionStorage.removeItem("buyAgainObj");
       window.sessionStorage.removeItem("couponCode");
@@ -68,7 +70,7 @@ window.addEventListener("message", (event) => {
     }
   }
 });
-function updateBuyAgainObj(){
+function updateBuyAgainObj() {
   var buyAgainString = window.sessionStorage.getItem("buyAgainObj");
   var buyAgainObj = JSON.parse(buyAgainString);
   var buyAgainURL = buyAgainObj?.URL;
@@ -81,15 +83,21 @@ function updateBuyAgainObj(){
   decryptedObj["orderId"] = Shopify.checkout.order_id;
   console.log(decryptedObj);
   var encryptedOrderData = CryptoJS.AES.encrypt(
-      JSON.stringify(decryptedObj),
-      "node-buy-again"
-    ).toString();
-  var buyAgainURI = `${buyAgainURL.split("buy-again?")[0]}buy-again?${encryptedOrderData}`;
+    JSON.stringify(decryptedObj),
+    "node-buy-again"
+  ).toString();
+  var buyAgainURI = `${
+    buyAgainURL.split("buy-again?")[0]
+  }buy-again?${encryptedOrderData}`;
   console.log(buyAgainURI);
-  buyAgainObj["URL"]=buyAgainURI;
-  console.log(buyAgainObj)
-  window.sessionStorage.setItem("buyAgainObj",JSON.stringify(buyAgainObj));
+  buyAgainObj["URL"] = buyAgainURI;
+  console.log(buyAgainObj);
+  window.sessionStorage.setItem("buyAgainObj", JSON.stringify(buyAgainObj));
 }
 function installApp() {
-  window.location.href = "https://testflight.apple.com/join/L5KE67vq";
+  if (appUrl) {
+    window.location.href = appUrl;
+  } else {
+    console.log("Error on creating AppURL");
+  }
 }
