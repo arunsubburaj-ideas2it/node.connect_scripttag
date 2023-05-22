@@ -59,7 +59,7 @@ setTimeout(function () {
   } else {
     const buyAgainObj = null;
     const checkoutObj = Shopify?.checkout;
-    if (buyAgainObj && checkoutObj) {
+    if (checkoutObj) {
       const interactionInstance = new NodeInteractions(
         checkoutObj,
         buyAgainObj
