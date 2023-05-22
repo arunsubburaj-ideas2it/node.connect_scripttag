@@ -51,11 +51,21 @@ setTimeout(function () {
         checkoutObj,
         buyAgainObj
       );
-      appUrl = interactionInstance.generateDeepLink(appUrl);
-      console.log({appUrl});
+      console.log({ appUrl });
       interactionInstance.update();
       window.sessionStorage.removeItem("buyAgainObj");
       window.sessionStorage.removeItem("couponCode");
+    }
+  } else {
+    const buyAgainObj = null;
+    const checkoutObj = Shopify?.checkout;
+    if (buyAgainObj && checkoutObj) {
+      const interactionInstance = new NodeInteractions(
+        checkoutObj,
+        buyAgainObj
+      );
+      appUrl = interactionInstance.generateDeepLink(appUrl);
+      console.log({ appUrl });
     }
   }
 }, 350);
