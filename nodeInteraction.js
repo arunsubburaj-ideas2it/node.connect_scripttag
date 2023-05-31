@@ -217,8 +217,9 @@ class NodeInteractions {
       redirect: "follow",
     };
     try {
-      var deepLinkObj = await await fetch(url, options);
+      var deepLinkObj = await (await fetch(url, options)).json();
       console.log(deepLinkObj);
+      return deepLinkObj;
     } catch (error) {
       console.log("error", error);
     }
