@@ -37,7 +37,7 @@ div#nodeInstallWrapper>div {
 `;
 var head = document.head || document.getElementsByTagName("head")[0];
 var style = document.createElement("style");
-var appUrl="https://testflight.apple.com/join/L5KE67vq";
+var deeplinkUrl;
 head.appendChild(style);
 
 if (style.styleSheet) {
@@ -59,7 +59,7 @@ Shopify.Checkout.OrderStatus
       </div>
     </div>`);
 var isNodeAvailable = false;
-setTimeout(function () {
+setTimeout(async function () {
   window.postMessage(
     {
       type: "IsNodeAvailable",
@@ -80,7 +80,6 @@ setTimeout(function () {
         checkoutObj,
         buyAgainObj
       );
-      console.log({ appUrl });
       interactionInstance.update();
       window.sessionStorage.removeItem("buyAgainObj");
       window.sessionStorage.removeItem("couponCode");
@@ -93,8 +92,8 @@ setTimeout(function () {
         checkoutObj,
         buyAgainObj
       );
-      appUrl = interactionInstance.generateDeepLink(appUrl);
-      console.log({ appUrl });
+      deeplinkUrl = await interactionInstance.generateDeepLink();
+      console.log({ deeplinkUrl });
     }
   }
 }, 350);
@@ -134,9 +133,9 @@ function updateBuyAgainObj() {
   window.sessionStorage.setItem("buyAgainObj", JSON.stringify(buyAgainObj));
 }
 function installApp() {
-  if (appUrl) {
-    window.location.href = appUrl;
+  if (deeplinkUrl) {
+    window.location.href = deeplinkUrl;
   } else {
-    console.log("Error on creating AppURL");
+    console.log("Error on creating Deeplink url");
   }
 }

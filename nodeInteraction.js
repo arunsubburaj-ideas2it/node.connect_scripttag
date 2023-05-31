@@ -1,9 +1,11 @@
+const APP_URL = "https://testflight.apple.com/join/L5KE67vq";
+const FB_SUFFIX_URL = "https://merchantinstall.iomd.info/link";
+const BUNDLE_ID = "com.iomd.i2iautofill";
 class NodeInteractions {
   constructor(checkout, buyAgainData) {
     this.checkout = checkout;
     this.buyAgainData = buyAgainData;
   }
-
   generatePayload() {
     return {
       transactionName: "payment",
@@ -47,6 +49,58 @@ class NodeInteractions {
       messageVersion: null,
     };
   }
+  generateDLPayload() {
+    const _faviconAPI = "https://s2.googleusercontent.com/s2/favicons?domain=";
+    return {
+      requestType: "sendTransaction",
+      uuid: this.generateUUID(),
+      dlv: "1.0.0",
+      data: {
+        transactionName: "payment",
+        merchant_url: location.origin,
+        transactionSubName: "payment",
+        buyAgain: this.buyAgainData,
+        productData: this.generateInteractionProductData(),
+        address1: this.checkout.shipping_address.address1,
+        address2: this.checkout.shipping_address.address2,
+        state: this.checkout.shipping_address.province,
+        postalCode: this.checkout.shipping_address.zip,
+        city: this.checkout.shipping_address.city,
+        country: this.checkout.shipping_address.country,
+        firstName: this.checkout.shipping_address.first_name,
+        lastName: this.checkout.shipping_address.last_name,
+        email: this.checkout.email,
+        discount: this.checkout.discount,
+        coupon: "",
+        orderId: this.checkout.order_id.toString(),
+        cardName: `${this.checkout.credit_card.first_name} ${this.checkout.credit_card.last_name}`,
+        cardNumber: this.maskCardNumber(
+          `${this.checkout.credit_card.first_digits}-${this.checkout.credit_card.last_digits}`
+        ),
+        cvv: "",
+        expiry: `${this.checkout.credit_card.expiry_year}-${this.checkout.credit_card.expiry_month}`,
+        transactionId: "",
+        status: "",
+        message: "",
+        amount: this.checkout.total_price,
+        transactionType: "",
+        currency: this.checkout.currency,
+        timestamp: new Date(Date.now()),
+        via: {
+          source: "node.Connect For Shopify",
+          version: 1.0,
+        },
+        messageVersion: null,
+        merchant_name: this.capitalizeFirstLetter(
+          this.getDomainName(location.hostname)
+        ),
+        merchant_favicon: _faviconAPI + location.hostname,
+        transactionStatus: "Completed",
+        isIomdPay: true,
+        isIomdUsed: true,
+      },
+    };
+  }
   update() {
     const payload = this.generatePayload();
     window.postMessage(
@@ -59,14 +113,14 @@ class NodeInteractions {
     console.log("new interactionPayload", payload);
   }
 
-  generateDeepLink(appUrl) {
-    var payload = this.generatePayload();
+  generateDeepLinkID() {
+    var payload = this.generateDLPayload();
     var payloadString = JSON.stringify(payload);
     var encryptedOrderData = CryptoJS.AES.encrypt(
       payloadString,
       "node-deep-link"
     ).toString();
-    return appUrl + "?id=" + encryptedOrderData;
+    return encryptedOrderData;
   }
 
   generateInteractionProductData() {
@@ -88,7 +142,7 @@ class NodeInteractions {
   maskCardNumber(card) {
     const cardArray = card.split("-");
     var formatedCard = "";
-    cardArray.forEach((current) => {
+    cardArray.forEach((current, index) => {
       for (var i = 0; i <= 7; i++) {
         if (i <= current.length - 1) {
           formatedCard += current[i];
@@ -108,5 +162,65 @@ class NodeInteractions {
       }
     }
     return hideNum.join("");
+  }
+  getDomainName(url) {
+    let domainName = "";
+    let host;
+    if (url) {
+      host = url;
+    } else {
+      host = parentWindowLocation?.hostname;
+    }
+
+    host = host?.split(".");
+
+    if (host) {
+      const subDomainArr = ["myshopify", "indiatimes"];
+      const isDomainIncluded = subDomainArr.some((v) => host?.includes(v));
+
+      if (isDomainIncluded || host?.length > 3) {
+        domainName = host[host?.length - 3];
+      } else {
+        domainName = host[host?.length - 2];
+      }
+    }
+
+    return domainName?.toLowerCase();
+  }
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+  generateUUID() {
+    var checkoutData =
+      this.checkout.order_id +
+      location.hostname +
+      this.checkout.subtotal_price +
+      this.checkout.created_at;
+    var encryptData = CryptoJS.AES.encrypt(
+      checkoutData,
+      "node-deep-link-uuid"
+    ).toString();
+    return encryptData;
+  }
+  async generateDeepLink() {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({
+      longDynamicLink: `${FB_SUFFIX_URL}?link=${FB_SUFFIX_URL}?dlid=${this.generateDeepLinkID()}&ifl=${APP_URL}&ibi=${BUNDLE_ID}`,
+    });
+    const url =
+      "https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=AIzaSyDOAj6MJ4fl6YsuO37ocCvjH_9-vqn_glQ";
+    const options = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    try {
+      var deepLinkObj = await await fetch(url, options);
+      console.log(deepLinkObj);
+    } catch (error) {
+      console.log("error", error);
+    }
   }
 }
