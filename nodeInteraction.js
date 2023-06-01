@@ -5,6 +5,35 @@ class NodeInteractions {
   constructor(checkout, buyAgainData) {
     this.checkout = checkout;
     this.buyAgainData = buyAgainData;
+    if (buyAgainData) {
+      this.buyAgainData = buyAgainData;
+    } else {
+      this.buyAgainData = this.generateBuyAgainUrl("NODE_C8PGB4GQ883B");
+    }
+  }
+  generateBuyAgainUrl(couponCode) {
+    const buyAgainData = {
+      orderId: this.checkout.order_id,
+    };
+    if (couponCode) {
+      buyAgainData["coupon"] = couponCode;
+    }
+    var encryptedOrderData = CryptoJS.AES.encrypt(
+      JSON.stringify(buyAgainData),
+      "node-buy-again"
+    ).toString();
+    var buyAgainURI =
+      window.location.origin + "/pages/buy-again?" + encryptedOrderData;
+    const buyAgainObj = {
+      enable: "true",
+      URL: buyAgainURI,
+      URLValidTill: new Date("06/06/2500").toISOString(),
+      discount: 5,
+      discountType: "percent",
+      minimumOrderValue: 0,
+      discountValidTill: new Date("06/06/2500").toISOString(),
+    };
+    return buyAgainObj;
   }
   generatePayload() {
     return {
