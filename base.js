@@ -37,7 +37,7 @@ div#nodeInstallWrapper>div {
 `;
 var head = document.head || document.getElementsByTagName("head")[0];
 var style = document.createElement("style");
-var deeplinkUrl;
+var deeplinkUrl, checkoutObj, interactionInstance;
 head.appendChild(style);
 
 if (style.styleSheet) {
@@ -47,8 +47,7 @@ if (style.styleSheet) {
   style.appendChild(document.createTextNode(css));
 }
 
-Shopify.Checkout.OrderStatus
-  .addContentBox(`<div id="nodeInstallWrapper">
+Shopify.Checkout.OrderStatus.addContentBox(`<div id="nodeInstallWrapper">
       <div class="nodeIcon"></div>
       <div>One-click. Never type. In your pocket.</div>
       <div>Protect against spam and phishing.</div>
@@ -67,38 +66,22 @@ setTimeout(async function () {
     },
     "*"
   );
-  var isCreatedFromNode =
+  var isBuyAgainExist =
     window.sessionStorage.getItem("buyAgainObj")?.length > 0;
-  if (isCreatedFromNode) {
+  var buyAgainObj;
+  if (isBuyAgainExist) {
     updateBuyAgainObj();
-    const buyAgainObj = JSON.parse(
-      window.sessionStorage.getItem("buyAgainObj")
-    );
-    const checkoutObj = Shopify?.checkout;
-    if (buyAgainObj && checkoutObj) {
-      const interactionInstance = new NodeInteractions(
-        checkoutObj,
-        buyAgainObj
-      );
-      interactionInstance.update();
-      window.sessionStorage.removeItem("buyAgainObj");
-      window.sessionStorage.removeItem("couponCode");
-    }
+    buyAgainObj = JSON.parse(window.sessionStorage.getItem("buyAgainObj"));
   } else {
-    const buyAgainObj = null;
-    const checkoutObj = Shopify?.checkout;
-    if (checkoutObj) {
-      const interactionInstance = new NodeInteractions(
-        checkoutObj,
-        buyAgainObj
-      );
-      deeplinkUrl = await interactionInstance.generateDeepLink();
-      console.log({ deeplinkUrl });
-    }
+    buyAgainObj = null;
   }
+  checkoutObj = Shopify?.checkout;
+  interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj);
+  handleDeepLink();
 }, 350);
 window.addEventListener("message", (event) => {
   if (event?.data?.type == "nodeAvailable") {
+    isNodeAvailable = true;
     console.log("Node Available");
     var nodeContentBox = Array.from(
       document.querySelectorAll(".content-box")
@@ -106,6 +89,7 @@ window.addEventListener("message", (event) => {
     if (nodeContentBox.length > 0) {
       nodeContentBox[0].remove();
     }
+    handleInteraction();
   }
 });
 function updateBuyAgainObj() {
@@ -137,5 +121,25 @@ function installApp() {
     window.location.href = deeplinkUrl;
   } else {
     console.log("Error on creating Deeplink url");
+  }
+}
+function handleInteraction() {
+  if (interactionInstance) {
+    interactionInstance.update();
+    window.sessionStorage.removeItem("buyAgainObj");
+    window.sessionStorage.removeItem("couponCode");
+  }
+}
+async function handleDeepLink() {
+  try {
+    if (interactionInstance) {
+      deeplinkRes = await interactionInstance.generateDeepLink();
+      deeplinkUrl = deeplinkRes.shortLink;
+      console.log({ deeplinkUrl });
+      window.sessionStorage.removeItem("buyAgainObj");
+      window.sessionStorage.removeItem("couponCode");
+    }
+  } catch (error) {
+    console.log("Error while creating deeplink", error);
   }
 }

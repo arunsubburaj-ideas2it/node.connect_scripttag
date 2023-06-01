@@ -55,6 +55,7 @@ class NodeInteractions {
       requestType: "sendTransaction",
       uuid: this.generateUUID(),
       dlv: "1.0.0",
+      source: location.hostname,
       data: {
         transactionName: "payment",
         merchant_url: location.origin,
