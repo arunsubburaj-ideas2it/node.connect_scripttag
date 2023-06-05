@@ -22,12 +22,13 @@ var css = `
 }
 div#nodeInstallWrapper>div {
   margin: 3px;
+  text-align: center;
 }
 #nodeInstallWrapper strong {
   font-weight: bold;
   color: #000;
 }
-#nodeInstallWrapper .actionBtns>button {
+#nodeInstallWrapper .actionBtns>button, #deepLink {
   color: #1773b0;
   font-weight: bold;
 }
@@ -49,13 +50,8 @@ if (style.styleSheet) {
 
 Shopify.Checkout.OrderStatus.addContentBox(`<div id="nodeInstallWrapper">
       <div class="nodeIcon"></div>
-      <div>One-click. Never type. In your pocket.</div>
-      <div>Protect against spam and phishing.</div>
-      <div>Privacy is <strong>your choice.</strong></div>
-      <div class="actionBtns">
-        <button id="deepLink" onClick="installApp()" title="Download node.">Download node.</button>
-        <button id="learnMore" disabled title="Learn more">Learn more</button>
-      </div>
+      <div>Install <span id="deepLink" onClick="installApp()" title="Install node.">node.</span> to instantly track your order with one click on your phone.</div>
+      <div><span style="font-weight:bold;">NO</span> usernames, passwords, accounts</div>
     </div>`);
 var isNodeAvailable = false;
 setTimeout(async function () {
