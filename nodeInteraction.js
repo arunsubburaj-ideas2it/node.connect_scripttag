@@ -150,8 +150,8 @@ class NodeInteractions {
       payloadString,
       "node-deep-link"
     ).toString();
-    encryptedOrderData.replace("=","%3D");
-    encryptedOrderData.replace("+","%2B");
+    encryptedOrderData = encryptedOrderData.replace("=","%3D");
+    encryptedOrderData = encryptedOrderData.replace("+","%2B");
     return encryptedOrderData;
   }
 
