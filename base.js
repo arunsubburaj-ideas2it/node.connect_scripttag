@@ -116,8 +116,9 @@ function updateBuyAgainObj() {
   console.log(buyAgainObj);
   window.sessionStorage.setItem("buyAgainObj", JSON.stringify(buyAgainObj));
 }
-function installApp() {
+async function installApp() {
   if (deeplinkUrl) {
+    await copyContent(deeplinkUrl);
     window.location.href = deeplinkUrl;
   } else {
     console.log("Error on creating Deeplink url");
@@ -141,5 +142,14 @@ async function handleDeepLink() {
     }
   } catch (error) {
     console.log("Error while creating deeplink", error);
+  }
+}
+
+async function copyContent(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    console.log("Content copied to clipboard");
+  } catch (err) {
+    console.error("Failed to copy: ", err);
   }
 }
