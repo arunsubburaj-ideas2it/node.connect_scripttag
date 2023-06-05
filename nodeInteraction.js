@@ -235,9 +235,22 @@ class NodeInteractions {
   async generateDeepLink() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
+    // var raw = JSON.stringify({
+    //   longDynamicLink: `${FB_SUFFIX_URL}?link=${FB_SUFFIX_URL}?dlid=${this.generateDeepLinkID()}&ifl=${APP_URL}&ibi=${BUNDLE_ID}&efr='1'`,
+    // });
     var raw = JSON.stringify({
-      longDynamicLink: `${FB_SUFFIX_URL}?link=${FB_SUFFIX_URL}?dlid=${this.generateDeepLinkID()}&ifl=${APP_URL}&ibi=${BUNDLE_ID}&efr='1'`,
-    });
+      dynamicLinkInfo: {
+        domainUriPrefix: FB_SUFFIX_URL,
+        link: `${FB_SUFFIX_URL}?dlid=${this.generateDeepLinkID()}`,
+        iosInfo: {
+          iosFallbackLink: APP_URL,
+          iosBundleId: BUNDLE_ID
+        },
+        navigationInfo: {
+          enableForcedRedirect: false,
+        },
+      },
+    })
     const url =
       "https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=AIzaSyDOAj6MJ4fl6YsuO37ocCvjH_9-vqn_glQ";
     const options = {
