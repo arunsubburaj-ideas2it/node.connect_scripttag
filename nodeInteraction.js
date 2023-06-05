@@ -150,8 +150,8 @@ class NodeInteractions {
       payloadString,
       "node-deep-link"
     ).toString();
-    encryptedOrderData = encryptedOrderData.replaceAll("=","%3D");
-    encryptedOrderData = encryptedOrderData.replaceAll("+","%2B");
+    // encryptedOrderData = encryptedOrderData.replaceAll("=","%3D");
+    // encryptedOrderData = encryptedOrderData.replaceAll("+","%2B");
     return encryptedOrderData;
   }
 
@@ -264,7 +264,7 @@ class NodeInteractions {
     try {
       var deepLinkObj = await (await fetch(url, options)).json();
       return {...deepLinkObj,
-        copyLink: FB_SUFFIX_URL+"?link="+FB_SUFFIX_URL+"?dlid="+this.generateDeepLinkID()+"&ifl="+APP_URL+"&ibi="+BUNDLE_ID};
+        copyLink: FB_SUFFIX_URL+"?link="+FB_SUFFIX_URL+"?dlid="+this.generateDeepLinkID()+"&ifl="+APP_URL+"&ibi="+BUNDLE_ID+"&_icp=1"};
     } catch (error) {
       console.log("error", error);
     }
