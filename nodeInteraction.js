@@ -247,7 +247,7 @@ class NodeInteractions {
           iosBundleId: BUNDLE_ID
         },
         navigationInfo: {
-          enableForcedRedirect: false,
+          enableForcedRedirect: true,
         },
       },
     })
