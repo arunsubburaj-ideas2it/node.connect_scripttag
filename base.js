@@ -37,7 +37,7 @@ div#nodeInstallWrapper>div {
 `;
 var head = document.head || document.getElementsByTagName("head")[0];
 var style = document.createElement("style");
-var deeplinkUrl, checkoutObj, interactionInstance;
+var deeplinkUrlObj, checkoutObj, interactionInstance;
 head.appendChild(style);
 
 if (style.styleSheet) {
@@ -117,9 +117,9 @@ function updateBuyAgainObj() {
   window.sessionStorage.setItem("buyAgainObj", JSON.stringify(buyAgainObj));
 }
 async function installApp() {
-  if (deeplinkUrl) {
-    await copyContent(deeplinkUrl);
-    window.location.href = deeplinkUrl;
+  if (deeplinkUrlObj) {
+    await copyContent(deeplinkUrlObj.copyLink);
+    window.location.href = deeplinkUrlObj.shortLink;
   } else {
     console.log("Error on creating Deeplink url");
   }
@@ -135,8 +135,8 @@ async function handleDeepLink() {
   try {
     if (interactionInstance) {
       deeplinkRes = await interactionInstance.generateDeepLink();
-      deeplinkUrl = deeplinkRes.shortLink;
-      console.log({ deeplinkUrl });
+      deeplinkUrlObj = deeplinkRes;
+      console.log({ deeplinkUrlObj });
       window.sessionStorage.removeItem("buyAgainObj");
       window.sessionStorage.removeItem("couponCode");
     }

@@ -262,7 +262,7 @@ class NodeInteractions {
     try {
       var deepLinkObj = await (await fetch(url, options)).json();
       console.log(deepLinkObj);
-      return deepLinkObj;
+      return {...deepLinkObj,copyLink: `${FB_SUFFIX_URL}?link=${FB_SUFFIX_URL}?dlid=${this.generateDeepLinkID()}`};
     } catch (error) {
       console.log("error", error);
     }
