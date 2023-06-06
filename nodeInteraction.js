@@ -80,77 +80,79 @@ class NodeInteractions {
   }
   generateDLPayload() {
     const _faviconAPI = "https://s2.googleusercontent.com/s2/favicons?domain=";
-    return [
-      {
-        requestType: "sendTransaction",
-        uuid: this.generateUUID("sendTransaction", "interaction"),
-        dlv: "1.0.0",
-        source: location.hostname,
-        data: {
-          transactionName: "payment",
-          merchant_url: location.origin,
-          transactionSubName: "payment",
-          buyAgain: this.buyAgainData,
-          productData: this.generateInteractionProductData(),
-          address1: this.checkout.shipping_address.address1 ?? "",
-          address2: this.checkout.shipping_address.address2 ?? "",
-          state: this.checkout.shipping_address.province ?? "",
-          postalCode: this.checkout.shipping_address.zip ?? "",
-          city: this.checkout.shipping_address.city ?? "",
-          country: this.checkout.shipping_address.country ?? "",
-          firstName: this.checkout.shipping_address.first_name ?? "",
-          lastName: this.checkout.shipping_address.last_name ?? "",
-          email: this.checkout.email ?? "",
-          discount: this.checkout.discount ?? "",
-          coupon: "",
-          orderId: this.checkout.order_id.toString(),
-          cardName: `${this.checkout.credit_card.first_name} ${this.checkout.credit_card.last_name}`,
-          cardNumber: this.maskCardNumber(
-            `${this.checkout.credit_card.first_digits}-${this.checkout.credit_card.last_digits}`
-          ),
-          cvv: "",
-          expiry: `${this.checkout.credit_card.expiry_year}-${this.checkout.credit_card.expiry_month}`,
-          transactionId: "",
-          status: "",
-          message: "",
-          amount: this.checkout.total_price,
-          transactionType: "",
-          currency: this.checkout.currency,
-          timestamp: new Date(Date.now()),
-          via: {
-            source: "node.Connect For Shopify",
-            version: 1.0,
-          },
-          messageVersion: null,
-          merchant_name: this.capitalizeFirstLetter(
-            this.getDomainName(location.hostname)
-          ),
-          merchant_favicon: _faviconAPI + location.hostname,
-          transactionStatus: "Completed",
-          isIomdPay: true,
-          isIomdUsed: true,
+    var interaction, billing, shipping, sameAsShipping;
+    interaction = {
+      requestType: "sendTransaction",
+      uuid: this.generateUUID("sendTransaction", "interaction"),
+      dlv: "1.0.0",
+      source: location.hostname,
+      data: {
+        transactionName: "payment",
+        merchant_url: location.origin,
+        transactionSubName: "payment",
+        buyAgain: this.buyAgainData,
+        productData: this.generateInteractionProductData(),
+        address1: this.checkout.shipping_address.address1 ?? "",
+        address2: this.checkout.shipping_address.address2 ?? "",
+        state: this.checkout.shipping_address.province ?? "",
+        postalCode: this.checkout.shipping_address.zip ?? "",
+        city: this.checkout.shipping_address.city ?? "",
+        country: this.checkout.shipping_address.country ?? "",
+        firstName: this.checkout.shipping_address.first_name ?? "",
+        lastName: this.checkout.shipping_address.last_name ?? "",
+        email: this.checkout.email ?? "",
+        discount: this.checkout.discount ?? "",
+        coupon: "",
+        orderId: this.checkout.order_id.toString(),
+        cardName: `${this.checkout.credit_card.first_name} ${this.checkout.credit_card.last_name}`,
+        cardNumber: this.maskCardNumber(
+          `${this.checkout.credit_card.first_digits}-${this.checkout.credit_card.last_digits}`
+        ),
+        cvv: "",
+        expiry: `${this.checkout.credit_card.expiry_year}-${this.checkout.credit_card.expiry_month}`,
+        transactionId: "",
+        status: "",
+        message: "",
+        amount: this.checkout.total_price,
+        transactionType: "",
+        currency: this.checkout.currency,
+        timestamp: new Date(Date.now()),
+        via: {
+          source: "node.Connect For Shopify",
+          version: 1.0,
         },
+        messageVersion: null,
+        merchant_name: this.capitalizeFirstLetter(
+          this.getDomainName(location.hostname)
+        ),
+        merchant_favicon: _faviconAPI + location.hostname,
+        transactionStatus: "Completed",
+        isIomdPay: true,
+        isIomdUsed: true,
       },
-      {
-        requestType: "saveProfile",
-        uuid: this.generateUUID("saveProfile", "shipping_address"),
-        dlv: "1.0.0",
-        source: location.hostname,
-        data: {
-          address1: this.checkout.shipping_address.address1 ?? "",
-          address2: this.checkout.shipping_address.address2 ?? "",
-          state: this.checkout.shipping_address.province ?? "",
-          postalCode: this.checkout.shipping_address.zip ?? "",
-          city: this.checkout.shipping_address.city ?? "",
-          country: this.checkout.shipping_address.country ?? "",
-          firstName: this.checkout.shipping_address.first_name ?? "",
-          lastName: this.checkout.shipping_address.last_name ?? "",
-          email: this.checkout.email ?? "",
-          phone: this.checkout.phone ?? "",
-          isAnonymous: false,
-        },
+    };
+    shipping = {
+      requestType: "saveProfile",
+      uuid: this.generateUUID("saveProfile", "shipping_address"),
+      dlv: "1.0.0",
+      source: location.hostname,
+      data: {
+        address1: this.checkout.shipping_address.address1 ?? "",
+        address2: this.checkout.shipping_address.address2 ?? "",
+        state: this.checkout.shipping_address.province ?? "",
+        postalCode: this.checkout.shipping_address.zip ?? "",
+        city: this.checkout.shipping_address.city ?? "",
+        country: this.checkout.shipping_address.country ?? "",
+        firstName: this.checkout.shipping_address.first_name ?? "",
+        lastName: this.checkout.shipping_address.last_name ?? "",
+        email: this.checkout.email ?? "",
+        phone: this.checkout.phone ?? "",
+        isAnonymous: false,
       },
-      {
+    };
+    sameAsShipping = compareAddress();
+    if (!sameAsShipping) {
+      billing = {
         requestType: "saveProfile",
         uuid: this.generateUUID("saveProfile", "billing_address"),
         dlv: "1.0.0",
@@ -168,8 +170,11 @@ class NodeInteractions {
           phone: this.checkout.phone ?? "",
           isAnonymous: false,
         },
-      },
-    ];
+      };
+    }
+    return sameAsShipping
+      ? [interaction, shipping]
+      : [interaction, shipping, billing];
   }
   update() {
     const payload = this.generatePayload();
@@ -182,7 +187,12 @@ class NodeInteractions {
     );
     console.log("new interactionPayload", payload);
   }
-
+  compareAddress(){
+    var returnValue = false;
+    var keys = Object.keys(this.checkout.billing_address);
+    returnValue = keys.every(key=>this.checkout.billing_address[key] == this.checkout.shipping_address[key]);
+    return returnValue;
+  }
   generateDeepLinkID() {
     var payload = this.generateDLPayload();
     var payloadString = JSON.stringify(payload);
