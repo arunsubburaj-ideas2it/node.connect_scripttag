@@ -150,7 +150,7 @@ class NodeInteractions {
         isAnonymous: false,
       },
     };
-    sameAsShipping = compareAddress();
+    sameAsShipping = this.compareAddress();
     if (!sameAsShipping) {
       billing = {
         requestType: "saveProfile",
