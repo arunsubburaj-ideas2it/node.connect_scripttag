@@ -95,11 +95,6 @@ div#lineItems {
   margin: 20px 0 !important;
   width: 100%;
 }
-.separator {
-  width: 50%;
-  border-bottom: 1px solid;
-  margin: 5px auto;
-}
 `;
 var head = document.head || document.getElementsByTagName("head")[0];
 var style = document.createElement("style");
@@ -238,10 +233,10 @@ function renderLineItems() {
                   </div>
               </div>
           `;
-    var separater = "<div class='separator'></div>";
-    if (lineItems.length != 1 && index != lineItems.length - 1) {
-      cards += separater;
-    }
+    // var separater = "<div class='separator'></div>";
+    // if (lineItems.length != 1 && index != lineItems.length - 1) {
+    //   cards += separater;
+    // }
   });
   document.getElementById("lineItems").innerHTML = cards;
 }
