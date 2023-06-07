@@ -211,6 +211,7 @@ async function copyContent(text) {
 
 function renderLineItems() {
   var lineItems = Shopify.checkout.line_items;
+  var cards = "";
   lineItems.forEach((current) => {
     cards += `
               <div class='card'>
