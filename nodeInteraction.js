@@ -1,6 +1,6 @@
-const APP_URL = "https://testflight.apple.com/join/L5KE67vq";
-const FB_SUFFIX_URL = "https://merchantinstall.iomd.info/link";
-const BUNDLE_ID = "com.iomd.i2iautofill";
+var APP_URL = "https://testflight.apple.com/join/L5KE67vq";
+var FB_SUFFIX_URL = "https://merchantinstall.iomd.info/link";
+var BUNDLE_ID = "com.iomd.i2iautofill";
 class NodeInteractions {
   constructor(checkout, buyAgainData) {
     this.checkout = checkout;
