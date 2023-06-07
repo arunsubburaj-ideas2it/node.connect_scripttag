@@ -35,6 +35,61 @@ div#nodeInstallWrapper>div {
 #nodeInstallWrapper .actionBtns>button[disabled] {
   color: #919191;
 }
+
+.productImage {
+  width: 60px;
+  height: 60px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: 1px solid #333;
+  border-radius: 5px;
+  position: relative;
+}
+
+.productCount {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #333;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.card {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  margin: 10px 0;
+  min-width: 260px;
+  border-bottom: 1px solid;
+}
+
+.productInfo {
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.productInfo>div {
+  text-align: left;
+}
+
+.productName {
+  padding-bottom: 10px;
+}
+
+div#lineItems {
+  width: 100%;
+}
 `;
 var head = document.head || document.getElementsByTagName("head")[0];
 var style = document.createElement("style");
@@ -50,9 +105,13 @@ if (style.styleSheet) {
 
 Shopify.Checkout.OrderStatus.addContentBox(`<div id="nodeInstallWrapper">
       <div class="nodeIcon"></div>
+      <div id="lineItems"></div>
       <div>Install <span id="deepLink" onClick="installApp()" title="Install node.">node.</span> to instantly track your order with one click on your phone.</div>
       <div><span style="font-weight:bold;">NO</span> usernames, passwords, accounts</div>
     </div>`);
+if (Shopify.checkout) {
+  renderLineItems();
+}
 var isNodeAvailable = false;
 setTimeout(async function () {
   window.postMessage(
@@ -148,4 +207,37 @@ async function copyContent(text) {
   } catch (err) {
     console.error("Failed to copy: ", err);
   }
+}
+
+function renderLineItems() {
+  var lineItems = Shopify.checkout.line_items;
+  lineItems.forEach((current) => {
+    cards += `
+              <div class='card'>
+                  <div class='productImage' style="background-image:url(${
+                    current.image_url
+                  })">
+                      <div class='productCount'>${current.quantity}</div>
+                  </div>
+                  <div class='productInfo'>
+                      <div class='productName'>${current.title}</div>
+                      <div class='productPrice'>${generatePriceString(
+                        current.price
+                      )}</div>
+                  </div>
+              </div>
+          `;
+  });
+  document.getElementById("lineItems").innerHTML = cards;
+}
+
+function generatePriceString(price) {
+  var currency = Shopify.checkout.currency;
+  var locale = "en-US";
+  const options = { style: "currency", currency };
+  const numberFormat = new Intl.NumberFormat(locale, options);
+
+  const parts = numberFormat.format(price);
+  console.log(parts);
+  return parts;
 }
