@@ -239,7 +239,7 @@ function renderLineItems() {
               </div>
           `;
     var separater = "<div class='separator'></div>";
-    if (index != 0 && index != lineItems.length - 1) {
+    if (lineItems.length != 1 && index != lineItems.length - 1) {
       cards += separater;
     }
   });
