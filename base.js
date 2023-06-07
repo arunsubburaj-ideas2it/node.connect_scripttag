@@ -39,11 +39,14 @@ div#nodeInstallWrapper>div {
 .productImage {
   width: 60px;
   height: 60px;
+  min-width: 60px;
+  min-height: 60px;
   background-repeat: no-repeat;
   background-size: cover;
   border: 1px solid #333;
   border-radius: 5px;
   position: relative;
+  background-color: #fff;
 }
 
 .productCount {
@@ -52,7 +55,7 @@ div#nodeInstallWrapper>div {
   position: absolute;
   top: -10px;
   right: -10px;
-  background-color: #333;
+  background-color: rgba(0,0,0,0.5);
   border-radius: 50%;
   color: #fff;
   display: flex;
@@ -67,9 +70,6 @@ div#nodeInstallWrapper>div {
   justify-content: flex-start;
   align-items: center;
   padding: 10px;
-  margin: 10px 0;
-  min-width: 260px;
-  border-bottom: 1px solid;
 }
 
 .productInfo {
@@ -88,7 +88,17 @@ div#nodeInstallWrapper>div {
 }
 
 div#lineItems {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 0px 3px 0px #000;
+  border-radius: 5px;
+  margin: 20px 0 !important;
   width: 100%;
+}
+.separator {
+  width: 50%;
+  border-bottom: 1px solid;
+  margin: 5px auto;
 }
 `;
 var head = document.head || document.getElementsByTagName("head")[0];
@@ -212,7 +222,7 @@ async function copyContent(text) {
 function renderLineItems() {
   var lineItems = Shopify.checkout.line_items;
   var cards = "";
-  lineItems.forEach((current) => {
+  lineItems.forEach((current, index) => {
     cards += `
               <div class='card'>
                   <div class='productImage' style="background-image:url(${
@@ -228,6 +238,10 @@ function renderLineItems() {
                   </div>
               </div>
           `;
+    var separater = "<div class='separator'></div>";
+    if (index != 0 && index != lineItems.length - 1) {
+      cards += separater;
+    }
   });
   document.getElementById("lineItems").innerHTML = cards;
 }
