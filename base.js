@@ -145,7 +145,7 @@ window.addEventListener("message", (event) => {
     console.log("Node Available");
     var nodeContentBox = Array.from(
       document.querySelectorAll(".content-box")
-    ).filter((currentEle) => currentEle.textContent.includes("Download node."));
+    ).filter((currentEle) => currentEle.querySelector("#nodeInstallWrapper"));
     if (nodeContentBox.length > 0) {
       nodeContentBox[0].remove();
     }
