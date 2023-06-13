@@ -125,8 +125,8 @@ if (style.styleSheet) {
 
 Shopify.Checkout.OrderStatus.addContentBox(`<div id="nodeInstallWrapper">
       <div class="nodeIcon"></div>
-      <div id="lineItems"></div>
       <div class="orderInfo"><div class="orderNo"></div><div class="email"></div></div>
+      <div id="lineItems"></div>
       <div>Install <span id="deepLink" onClick="installApp()" title="Install node.">node.</span> to instantly track your order with one click on your phone.</div>
       <div><span style="font-weight:bold;">NO</span> usernames, passwords, accounts</div>
     </div>`);
