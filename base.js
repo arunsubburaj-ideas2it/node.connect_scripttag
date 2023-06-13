@@ -105,10 +105,14 @@ div#lineItems {
   flex-direction: column;
 }
 
-.orderInfo>div {margin-bottom: 10px;}
+.orderInfo>div {
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
 
 .orderInfo .email {
   color: rgba(0,0,0,0.5);
+  text-transform: lowercase;
 }
 `;
 var head = document.head || document.getElementsByTagName("head")[0];
