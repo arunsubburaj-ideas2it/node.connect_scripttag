@@ -95,6 +95,21 @@ div#lineItems {
   margin: 20px 0 !important;
   width: 100%;
 }
+.orderInfo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 10px;
+  font-size: 16px;
+  font-weight: bold;
+  flex-direction: column;
+}
+
+.orderInfo>div {margin-bottom: 10px;}
+
+.orderInfo .email {
+  color: rgba(0,0,0,0.5);
+}
 `;
 var head = document.head || document.getElementsByTagName("head")[0];
 var style = document.createElement("style");
@@ -111,11 +126,14 @@ if (style.styleSheet) {
 Shopify.Checkout.OrderStatus.addContentBox(`<div id="nodeInstallWrapper">
       <div class="nodeIcon"></div>
       <div id="lineItems"></div>
+      <div class="orderInfo"><div class="orderNo"></div><div class="email"></div></div>
       <div>Install <span id="deepLink" onClick="installApp()" title="Install node.">node.</span> to instantly track your order with one click on your phone.</div>
       <div><span style="font-weight:bold;">NO</span> usernames, passwords, accounts</div>
     </div>`);
 if (Shopify.checkout) {
   renderLineItems();
+  document.querySelector("#nodeInstallWrapper .orderNo").innerText = document.querySelector(".os-order-number").innerText; 
+  document.querySelector("#nodeInstallWrapper .orderInfo .email").innerText = Shopify.checkout.email; 
 }
 var isNodeAvailable = false;
 setTimeout(async function () {
