@@ -94,6 +94,8 @@ div#lineItems {
   border-radius: 5px;
   margin: 20px 0 !important;
   width: 100%;
+  max-height: 200px;
+  overflow: auto;
 }
 .orderInfo {
   display: flex;
