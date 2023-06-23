@@ -76,6 +76,7 @@ div#nodeInstallWrapper>div {
   display: flex;
   flex-direction: row;
   align-items: center;
+  font-weight: bold;
   justify-content: space-between;
 }
 
@@ -84,8 +85,7 @@ div#nodeInstallWrapper>div {
 }
 
 .productName {
-  padding-bottom: 10px;
-  max-width: 70%;
+  max-width: 60%;
 }
 
 div#lineItems {
@@ -129,12 +129,6 @@ span.nodeDot {
   font-weight: bold;
 }
 
-div#nodeInstallWrapper>div:last-child {
-  color: #aaa;
-  font-size: 10px;
-  padding-top: 5px;
-}
-.productPrice {max-width: 30%;}
 
 div#nodeInstallSkeleton {
   display: flex;
@@ -260,9 +254,9 @@ setTimeout(async function () {
   interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj);
   handleDeepLink();
   setTimeout(function () {
-    document.getElementById("nodeInstallSkeleton").hide();
-    document.getElementsById("nodeInstallWrapper").show();
-  }, 3000);
+    document.getElementById("nodeInstallSkeleton").style.display == "none";
+    document.getElementById("nodeInstallWrapper").style.display == "flex";
+  }, 2000);
 }, 350);
 window.addEventListener("message", (event) => {
   if (event?.data?.type == "nodeAvailable") {
