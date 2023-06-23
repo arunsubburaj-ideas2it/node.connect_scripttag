@@ -1,9 +1,12 @@
 var css = `
 #nodeInstallWrapper {
-  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  display: none;
+}
+#nodeInstallWrapper.show{
+  display: flex;
 }
 #nodeInstallWrapper .nodeIcon {
   background-image: url("https://cdn.shopify.com/s/files/1/0764/8424/7843/files/node_icon_7ea198d0-732c-4b5f-bbd1-3763b481be6b_480x480.png?v=1684781028");
@@ -13,27 +16,23 @@ var css = `
   width: 109px;
   height: 60px;
 }
-#nodeInstallWrapper .actionBtns{
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  width: 100%;
-  margin: 20px;
-}
+
 div#nodeInstallWrapper>div {
-  margin: 3px;
   text-align: center;
 }
-#nodeInstallWrapper strong {
+
+#deepLink {
+  color: #fff;
   font-weight: bold;
-  color: #000;
-}
-#nodeInstallWrapper .actionBtns>button, #deepLink {
-  color: #1773b0;
-  font-weight: bold;
-}
-#nodeInstallWrapper .actionBtns>button[disabled] {
-  color: #919191;
+  background: #2F7C67;
+  display: block;
+  padding: 15px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .productImage {
@@ -75,8 +74,9 @@ div#nodeInstallWrapper>div {
 .productInfo {
   margin-left: 30px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .productInfo>div {
@@ -85,12 +85,12 @@ div#nodeInstallWrapper>div {
 
 .productName {
   padding-bottom: 10px;
+  max-width: 70%;
 }
 
 div#lineItems {
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 0px 3px 0px #000;
   border-radius: 5px;
   margin: 20px 0 !important;
   width: 100%;
@@ -98,23 +98,90 @@ div#lineItems {
   overflow: auto;
 }
 .orderInfo {
+  margin-left: 30px;
   display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 10px;
-  font-size: 16px;
+  flex-direction: row;
+  align-items: center;
   font-weight: bold;
-  flex-direction: column;
+  justify-content: space-between;
 }
 
 .orderInfo>div {
-  margin-bottom: 10px;
   text-transform: uppercase;
 }
 
 .orderInfo .email {
   color: rgba(0,0,0,0.5);
   text-transform: lowercase;
+  margin-bottom: 10px;
+}
+
+.separator {
+  border-bottom: 1px solid;
+  width: 100%;
+  border-color: #ccc;
+  margin-top: 15px !important;
+}
+
+span.nodeDot {
+  color: #2BA281;
+  padding-left: 1px;
+  font-weight: bold;
+}
+
+div#nodeInstallWrapper>div:last-child {
+  color: #aaa;
+  font-size: 10px;
+  padding-top: 5px;
+}
+.productPrice {max-width: 30%;}
+
+div#nodeInstallSkeleton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#nodeInstallSkeleton .nodeIcon {
+  width: 75px;
+  height: 50px;
+  margin: 5px 0;
+  border-radius: 5px;
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+.skeleton-heading {
+  width: 80%;
+  height: 2rem;
+  margin: 8px 0;
+  animation: skeleton-loading 1s linear infinite alternate;
+  line-height: 30px;
+  border-radius: 5px;
+}
+
+.skeleton-message {
+  height: 60px;
+  width: 100%;
+  animation: skeleton-loading 1s linear infinite alternate;
+  margin: 5px;
+}
+
+.skeleton-button {
+  width: 80%;
+  margin: 10px auto;
+  height: 35px;
+  animation: skeleton-loading 1s linear infinite alternate;
+  border-radius: 5px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(200, 20%, 80%);
+  }
+  100% {
+    background-color: hsl(200, 20%, 95%);
+  }
 }
 `;
 var head = document.head || document.getElementsByTagName("head")[0];
@@ -129,17 +196,47 @@ if (style.styleSheet) {
   style.appendChild(document.createTextNode(css));
 }
 
-Shopify.Checkout.OrderStatus.addContentBox(`<div id="nodeInstallWrapper">
-      <div class="nodeIcon"></div>
-      <div class="orderInfo"><div class="orderNo"></div><div class="email"></div></div>
-      <div id="lineItems"></div>
-      <div>Install <span id="deepLink" onClick="installApp()" title="Install node.">node.</span> to instantly track your order with one click on your phone.</div>
-      <div><span style="font-weight:bold;">NO</span> usernames, passwords, accounts</div>
-    </div>`);
+Shopify.Checkout.OrderStatus.addContentBox(`
+<div id="nodeInstallSkeleton">
+    <div class="nodeIcon"></div>
+    <div class="skeleton-heading"></div>
+    <div class="skeleton-message"></div>
+    <div class="skeleton-button"></div>
+</div>
+<div id="nodeInstallWrapper">
+  <div class="nodeIcon"></div>
+  <h2 style="text-align: center; width: 100%; margin-bottom: 10px;">Want to keep your personal email private?</h2>
+  <div style="text-align: left;
+  ">Get a tokenized email to prevent spam and phishing attempts. Save and manage all your orders instantly and
+      securely only on your phone using <b>node.</b></div>
+  <button id="deepLink" onclick="installApp()">
+      <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 -960 960 960" width="16"
+          style="fill: #fff;margin-right: 5px;">
+          <path
+              d="M263.717-96Q234-96 213-117.15T192-168v-384q0-29.7 21.15-50.85Q234.3-624 264-624h24v-96q0-79.68 56.226-135.84t136-56.16Q560-912 616-855.84T672-720v96h24q29.7 0 50.85 21.15Q768-581.7 768-552v384q0 29.7-21.162 50.85Q725.676-96 695.96-96H263.717Zm.283-72h432v-384H264v384Zm216.212-120Q510-288 531-309.212q21-21.213 21-51Q552-390 530.788-411q-21.213-21-51-21Q450-432 429-410.788q-21 21.213-21 51Q408-330 429.212-309q21.213 21 51 21ZM360-624h240v-96q0-50-35-85t-85-35q-50 0-85 35t-35 85v96Zm-96 456v-384 384Z">
+          </path>
+      </svg>
+      <span class="buttonMsg">Securely manage orders with node<span class="nodeDot">.</span></span>
+  </button>
+  <div style=" color: #afafaf; font-size: 12px;">100% private. Instant &amp; secure access on your phone.</div>
+  <div class="separator"></div>
+  <div class="orderInfo">
+      <div class="orderNo"></div>
+      <div class="email"></div>
+  </div>
+  <div id="lineItems">
+  </div>
+</div>`);
+var nodeContentBox = Array.from(
+  document.querySelectorAll(".content-box")
+).filter((currentEle) => currentEle.querySelector("#nodeInstallWrapper"));
+if (nodeContentBox.length > 0) {
+  document.querySelector(".section__content").prepend(nodeContentBox[0]);
+}
 if (Shopify.checkout) {
   renderLineItems();
-  document.querySelector("#nodeInstallWrapper .orderNo").innerText = document.querySelector(".os-order-number").innerText; 
-  document.querySelector("#nodeInstallWrapper .orderInfo .email").innerText = Shopify.checkout.email; 
+  document.querySelector("#nodeInstallWrapper .orderNo").innerText = document.querySelector(".os-order-number").innerText;
+  document.querySelector("#nodeInstallWrapper .orderInfo .email").innerText = Shopify.checkout.email;
 }
 var isNodeAvailable = false;
 setTimeout(async function () {
@@ -162,6 +259,10 @@ setTimeout(async function () {
   checkoutObj = Shopify?.checkout;
   interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj);
   handleDeepLink();
+  setTimeout(function () {
+    document.getElementById("nodeInstallSkeleton").hide();
+    document.getElementsById("nodeInstallWrapper").show();
+  }, 3000);
 }, 350);
 window.addEventListener("message", (event) => {
   if (event?.data?.type == "nodeAvailable") {
@@ -171,7 +272,7 @@ window.addEventListener("message", (event) => {
       document.querySelectorAll(".content-box")
     ).filter((currentEle) => currentEle.querySelector("#nodeInstallWrapper"));
     if (nodeContentBox.length > 0) {
-      nodeContentBox[0].remove();
+      nodeContentBox[0].querySelector("#deepLink .buttonMsg").innerHTML = "See your order on your node<span class='nodeDot'>.</span>"
     }
     handleInteraction();
   }
@@ -192,9 +293,8 @@ function updateBuyAgainObj() {
     JSON.stringify(decryptedObj),
     "node-buy-again"
   ).toString();
-  var buyAgainURI = `${
-    buyAgainURL.split("buy-again?")[0]
-  }buy-again?${encryptedOrderData}`;
+  var buyAgainURI = `${buyAgainURL.split("buy-again?")[0]
+    }buy-again?${encryptedOrderData}`;
   console.log(buyAgainURI);
   buyAgainObj["URL"] = buyAgainURI;
   console.log(buyAgainObj);
@@ -244,16 +344,15 @@ function renderLineItems() {
   lineItems.forEach((current, index) => {
     cards += `
               <div class='card'>
-                  <div class='productImage' style="background-image:url(${
-                    current.image_url
-                  })">
+                  <div class='productImage' style="background-image:url(${current.image_url
+      })">
                       <div class='productCount'>${current.quantity}</div>
                   </div>
                   <div class='productInfo'>
                       <div class='productName'>${current.title}</div>
                       <div class='productPrice'>${generatePriceString(
-                        current.price
-                      )}</div>
+        current.price
+      )}</div>
                   </div>
               </div>
           `;
