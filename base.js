@@ -98,10 +98,11 @@ div#lineItems {
   overflow: auto;
 }
 .orderInfo {
-  margin-left: 30px;
+  margin: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
   font-weight: bold;
   justify-content: space-between;
 }
@@ -113,7 +114,6 @@ div#lineItems {
 .orderInfo .email {
   color: rgba(0,0,0,0.5);
   text-transform: lowercase;
-  margin-bottom: 10px;
 }
 
 .separator {
@@ -254,8 +254,8 @@ setTimeout(async function () {
   interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj);
   handleDeepLink();
   setTimeout(function () {
-    document.getElementById("nodeInstallSkeleton").style.display == "none";
-    document.getElementById("nodeInstallWrapper").style.display == "flex";
+    document.getElementById("nodeInstallSkeleton").style.display = "none";
+    document.getElementById("nodeInstallWrapper").style.display = "flex";
   }, 2000);
 }, 350);
 window.addEventListener("message", (event) => {
