@@ -200,7 +200,7 @@ Shopify.Checkout.OrderStatus.addContentBox(`
 <div id="nodeInstallWrapper">
   <div class="nodeIcon"></div>
   <h2 style="text-align: center; width: 100%; margin-bottom: 10px;">Want to keep your personal email private?</h2>
-  <div style="text-align: left;
+  <div class="benefits" style="text-align: left;
   ">Get a tokenized email to prevent spam and phishing attempts. Save and manage all your orders instantly and
       securely only on your phone using <b>node.</b></div>
   <button id="deepLink" onclick="installApp()">
@@ -266,6 +266,8 @@ window.addEventListener("message", (event) => {
       document.querySelectorAll(".content-box")
     ).filter((currentEle) => currentEle.querySelector("#nodeInstallWrapper"));
     if (nodeContentBox.length > 0) {
+      nodeContentBox[0].querySelector("#nodeInstallWrapper h2").innerText = "Your order has automatically and instantly been added to your node."
+      nodeContentBox[0].querySelector("#nodeInstallWrapper .benefits").style.display = "none";
       nodeContentBox[0].querySelector("#deepLink .buttonMsg").innerHTML = "See your order on your node<span class='nodeDot'>.</span>"
     }
     handleInteraction();
