@@ -199,7 +199,7 @@ Shopify.Checkout.OrderStatus.addContentBox(`
 </div>
 <div id="nodeInstallWrapper">
   <div class="nodeIcon"></div>
-  <h2 style="text-align: center; width: 100%; margin-bottom: 10px;">Want to keep your personal email private?</h2>
+  <h2 style="text-align: center; width: 100%; margin-bottom: 10px;">Want to manage your orders and keep your personal email private?</h2>
   <div class="benefits" style="text-align: left;
   ">Get a tokenized email to prevent spam and phishing attempts. Save and manage all your orders instantly and
       securely only on your phone using <b>node.</b></div>
