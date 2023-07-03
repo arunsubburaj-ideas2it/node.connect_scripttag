@@ -105,6 +105,7 @@ div#lineItems {
   width: 100%;
   font-weight: bold;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .orderInfo>div {
