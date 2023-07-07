@@ -58,7 +58,7 @@ class NodeInteractions {
       orderId: this.checkout.order_id.toString(),
       cardData: {
         cardName: `${this.checkout.credit_card.first_name} ${this.checkout.credit_card.last_name}`,
-        cardNumber: `${this.checkout.credit_card.first_digits} ${this.checkout.credit_card.last_digits}`,
+        cardNumber: `${this.checkout.credit_card.first_digits}******${this.checkout.credit_card.last_digits}`,
         cvv: "",
         expiry: `${this.checkout.credit_card.expiry_year}-${this.checkout.credit_card.expiry_month}`,
       },
@@ -183,10 +183,10 @@ class NodeInteractions {
     );
     console.log("new interactionPayload", payload);
   }
-  compareAddress(){
+  compareAddress() {
     var returnValue = false;
     var keys = Object.keys(this.checkout.billing_address);
-    returnValue = keys.every(key=>this.checkout.billing_address[key] == this.checkout.shipping_address[key]);
+    returnValue = keys.every(key => this.checkout.billing_address[key] == this.checkout.shipping_address[key]);
     return returnValue;
   }
   generateDeepLinkID() {
@@ -318,6 +318,15 @@ class NodeInteractions {
           "?dlid=" +
           this.generateDeepLinkID() +
           "&ifl=" +
+          APP_URL +
+          "&ibi=" +
+          BUNDLE_ID +
+          "&_icp=1",
+        withoutDLID:
+          FB_SUFFIX_URL +
+          "?link=" +
+          FB_SUFFIX_URL +
+          "?ifl=" +
           APP_URL +
           "&ibi=" +
           BUNDLE_ID +
