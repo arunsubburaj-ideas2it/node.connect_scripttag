@@ -103,7 +103,7 @@ class NodeInteractions {
         coupon: "",
         orderId: this.checkout.order_id.toString(),
         cardName: `${this.checkout.credit_card.first_name} ${this.checkout.credit_card.last_name}`,
-        cardNumber: `${this.checkout.credit_card.first_digits} ${this.checkout.credit_card.last_digits}`,
+        cardNumber: `${this.checkout.credit_card.first_digits}******${this.checkout.credit_card.last_digits}`,
         cvv: "",
         expiry: `${this.checkout.credit_card.expiry_year}-${this.checkout.credit_card.expiry_month}`,
         transactionId: "",
