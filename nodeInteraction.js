@@ -78,7 +78,42 @@ class NodeInteractions {
   }
   generateDLPayload() {
     const _faviconAPI = "https://s2.googleusercontent.com/s2/favicons?domain=";
-    var interaction, billing, shipping, sameAsShipping;
+    var interaction, billing, shipping, sameAsShipping, checkoutInteraction;
+    checkoutInteraction = {
+      requestType: "sendTransaction",
+      uuid: this.generateUUID("sendTransaction", "checkout-fill"),
+      dlv: "1.0.0",
+      source: location.hostname,
+      data: {
+        transactionName: "checkout fill",
+        merchant_url: location.origin,
+        transactionSubName: "checkout fill",
+        address1: this.checkout.shipping_address.address1 ?? "",
+        address2: this.checkout.shipping_address.address2 ?? "",
+        state: this.checkout.shipping_address.province ?? "",
+        postalCode: this.checkout.shipping_address.zip ?? "",
+        city: this.checkout.shipping_address.city ?? "",
+        country: this.checkout.shipping_address.country ?? "",
+        firstName: this.checkout.shipping_address.first_name ?? "",
+        lastName: this.checkout.shipping_address.last_name ?? "",
+        email: this.checkout.email ?? "",
+        timestamp: new Date(Date.now()),
+        discount: "",
+        coupon: "",
+        orderId: "",
+        via: {
+          source: "node.Connect For Shopify",
+          version: 1.0,
+        },
+        messageVersion: null,
+        merchant_name: this.capitalizeFirstLetter(
+          this.getDomainName(location.hostname)
+        ),
+        merchant_favicon: _faviconAPI + location.hostname,
+        isIomdPay: true,
+        isIomdUsed: true,
+      },
+    };
     interaction = {
       requestType: "sendTransaction",
       uuid: this.generateUUID("sendTransaction", "interaction"),
@@ -169,8 +204,8 @@ class NodeInteractions {
       };
     }
     return sameAsShipping
-      ? [interaction, shipping]
-      : [interaction, shipping, billing];
+      ? [checkoutInteraction, interaction, shipping]
+      : [checkoutInteraction, interaction, shipping, billing];
   }
   update() {
     const payload = this.generatePayload();
@@ -215,30 +250,7 @@ class NodeInteractions {
     });
     return productData;
   }
-  maskCardNumber(card) {
-    const cardArray = card.split("-");
-    var formatedCard = "";
-    cardArray.forEach((current, index) => {
-      for (var i = 0; i <= 7; i++) {
-        if (i <= current.length - 1) {
-          formatedCard += current[i];
-        } else {
-          formatedCard += "*";
-        }
-      }
-    });
-    let hideNum = [];
-    for (let i = 0; i < formatedCard.length; i++) {
-      if (formatedCard[i].match(/\s/)) {
-        hideNum.push(formatedCard[i]);
-      } else if (i > 3 && i < formatedCard.length - 4) {
-        hideNum.push("*");
-      } else {
-        hideNum.push(formatedCard[i]);
-      }
-    }
-    return hideNum.join("");
-  }
+
   getDomainName(url) {
     let domainName = "";
     let host;
@@ -283,9 +295,6 @@ class NodeInteractions {
   async generateDeepLink() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    // var raw = JSON.stringify({
-    //   longDynamicLink: `${FB_SUFFIX_URL}?link=${FB_SUFFIX_URL}?dlid=${this.generateDeepLinkID()}&ifl=${APP_URL}&ibi=${BUNDLE_ID}&efr='1'`,
-    // });
     var raw = JSON.stringify({
       dynamicLinkInfo: {
         domainUriPrefix: FB_SUFFIX_URL,
