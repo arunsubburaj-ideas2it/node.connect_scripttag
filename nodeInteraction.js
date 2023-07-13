@@ -36,11 +36,17 @@ class NodeInteractions {
     return buyAgainObj;
   }
   generatePayload() {
+    var encryptedShopInfo = window.sessionStorage.getItem("nodeConnectSD");
+    if (encryptedShopInfo) {
+      var bytes = CryptoJS.AES.decrypt(encryptedShopInfo, "node-connect-profile-data");
+      decryptedShopInfo = bytes.toString(CryptoJS.enc.Utf8);
+    }
     return {
       transactionName: "payment",
       merchant_url: location.origin,
       transactionSubName: "payment",
       buyAgain: this.buyAgainData,
+      shopName: decryptedShopInfo ? decryptedShopInfo.name: "",
       productData: this.generateInteractionProductData(),
       shippingAddress: {
         address1: this.checkout.shipping_address.address1,
