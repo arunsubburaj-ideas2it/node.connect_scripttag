@@ -78,7 +78,12 @@ class NodeInteractions {
   }
   generateDLPayload() {
     const _faviconAPI = "https://s2.googleusercontent.com/s2/favicons?domain=";
-    var interaction, billing, shipping, sameAsShipping, checkoutInteraction;
+    var interaction, billing, shipping, sameAsShipping, checkoutInteraction, decryptedShopInfo;
+    var encryptedShopInfo = window.sessionStorage.getItem("nodeConnectSD");
+    if (encryptedShopInfo) {
+      var bytes = CryptoJS.AES.decrypt(encryptedShopInfo, "node-connect-profile-data");
+      decryptedShopInfo = bytes.toString(CryptoJS.enc.Utf8);
+    }
     checkoutInteraction = {
       requestType: "sendTransaction",
       uuid: this.generateUUID("sendTransaction", "checkout-fill"),
@@ -106,7 +111,7 @@ class NodeInteractions {
           version: 1.0,
         },
         messageVersion: null,
-        merchant_name: this.capitalizeFirstLetter(
+        merchant_name: decryptedShopInfo ? decryptedShopInfo.name: this.capitalizeFirstLetter(
           this.getDomainName(location.hostname)
         ),
         merchant_favicon: _faviconAPI + location.hostname,
@@ -153,7 +158,7 @@ class NodeInteractions {
           version: 1.0,
         },
         messageVersion: null,
-        merchant_name: this.capitalizeFirstLetter(
+        merchant_name: decryptedShopInfo ? decryptedShopInfo.name: this.capitalizeFirstLetter(
           this.getDomainName(location.hostname)
         ),
         merchant_favicon: _faviconAPI + location.hostname,
