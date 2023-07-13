@@ -36,6 +36,7 @@ class NodeInteractions {
     return buyAgainObj;
   }
   generatePayload() {
+    var decryptedShopInfo;
     var encryptedShopInfo = window.sessionStorage.getItem("nodeConnectSD");
     if (encryptedShopInfo) {
       var bytes = CryptoJS.AES.decrypt(encryptedShopInfo, "node-connect-profile-data");
