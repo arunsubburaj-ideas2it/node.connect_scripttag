@@ -47,7 +47,7 @@ class NodeInteractions {
       merchant_url: location.origin,
       transactionSubName: "payment",
       buyAgain: this.buyAgainData,
-      shopName: decryptedShopInfo ? decryptedShopInfo.name: "",
+      shopName: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name: "",
       productData: this.generateInteractionProductData(),
       shippingAddress: {
         address1: this.checkout.shipping_address.address1,
@@ -118,7 +118,7 @@ class NodeInteractions {
           version: 1.0,
         },
         messageVersion: null,
-        merchant_name: decryptedShopInfo ? decryptedShopInfo.name: this.capitalizeFirstLetter(
+        merchant_name: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name: this.capitalizeFirstLetter(
           this.getDomainName(location.hostname)
         ),
         merchant_favicon: _faviconAPI + location.hostname,
@@ -165,7 +165,7 @@ class NodeInteractions {
           version: 1.0,
         },
         messageVersion: null,
-        merchant_name: decryptedShopInfo ? decryptedShopInfo.name: this.capitalizeFirstLetter(
+        merchant_name: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name: this.capitalizeFirstLetter(
           this.getDomainName(location.hostname)
         ),
         merchant_favicon: _faviconAPI + location.hostname,
