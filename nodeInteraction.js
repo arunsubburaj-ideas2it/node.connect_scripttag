@@ -75,7 +75,7 @@ class NodeInteractions {
       message: "",
       amount: this.checkout.total_price,
       transactionType: "",
-      currency: this.checkout.currency,
+      currency: this.checkout.presentment_currency,
       timestamp: new Date(Date.now()),
       via: {
         source: "node.Connect For Shopify",
@@ -160,7 +160,7 @@ class NodeInteractions {
         message: "",
         amount: this.checkout.total_price,
         transactionType: "",
-        currency: this.checkout.currency,
+        currency: this.checkout.presentment_currency,
         timestamp: new Date(Date.now()),
         via: {
           source: "node.Connect For Shopify",

@@ -367,7 +367,7 @@ function renderLineItems() {
 }
 
 function generatePriceString(price) {
-  var currency = Shopify.checkout.currency;
+  var currency = Shopify.checkout.presentment_currency;
   var locale = "en-US";
   const options = { style: "currency", currency };
   const numberFormat = new Intl.NumberFormat(locale, options);
