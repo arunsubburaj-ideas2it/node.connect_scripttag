@@ -253,7 +253,7 @@ setTimeout(async function () {
   }
   checkoutObj = Shopify?.checkout;
   interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj);
-  handleDeepLink();
+  // handleDeepLink();
   setTimeout(function () {
     document.getElementById("nodeInstallSkeleton").style.display = "none";
     document.getElementById("nodeInstallWrapper").style.display = "flex";
@@ -262,6 +262,9 @@ setTimeout(async function () {
 window.addEventListener("message", (event) => {
   if (event?.data?.type == "nodeAvailable") {
     isNodeAvailable = true;
+    if (interactionInstance) {
+      interactionInstance.isNodeAvailable = true;
+    }
     console.log("Node Available");
     var nodeContentBox = Array.from(
       document.querySelectorAll(".content-box")
@@ -298,6 +301,7 @@ function updateBuyAgainObj() {
   window.sessionStorage.setItem("buyAgainObj", JSON.stringify(buyAgainObj));
 }
 async function installApp() {
+  await handleDeepLink()
   if (deeplinkUrlObj) {
     await copyContent(deeplinkUrlObj.copyLink);
     window.location.href = deeplinkUrlObj.shortLink;
@@ -310,6 +314,7 @@ function handleInteraction() {
     interactionInstance.update();
     window.sessionStorage.removeItem("buyAgainObj");
     window.sessionStorage.removeItem("couponCode");
+    window.sessionStorage.removeItem("nodeConnectSD");
   }
 }
 async function handleDeepLink() {

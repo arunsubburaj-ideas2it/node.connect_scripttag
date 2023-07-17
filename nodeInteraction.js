@@ -3,6 +3,7 @@ const FB_SUFFIX_URL = "https://merchantinstall.iomd.info/link";
 const BUNDLE_ID = "com.iomd.i2iautofill";
 class NodeInteractions {
   constructor(checkout, buyAgainData) {
+    this.isNodeAvailable = false;
     this.checkout = checkout;
     this.buyAgainData = buyAgainData;
     if (buyAgainData) {
@@ -237,7 +238,7 @@ class NodeInteractions {
     return returnValue;
   }
   generateDeepLinkID() {
-    var payload = this.generateDLPayload();
+    var payload = this.isNodeAvailable ? []: this.generateDLPayload();
     var payloadString = JSON.stringify(payload);
     var encryptedOrderData = CryptoJS.AES.encrypt(
       payloadString,
