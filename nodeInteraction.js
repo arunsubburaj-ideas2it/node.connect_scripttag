@@ -82,6 +82,7 @@ class NodeInteractions {
         version: 1.0,
       },
       messageVersion: null,
+      uuid: this.generateUUID("sendTransaction", "interaction"),
     };
   }
   generateDLPayload() {
