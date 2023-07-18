@@ -287,14 +287,13 @@ class NodeInteractions {
   }
   generateUUID() {
     var checkoutData =
-      "interactions" +
-      this.checkout.order_id +
-      location.hostname +
-      this.checkout.created_at;
-    var encryptData = CryptoJS.AES.encrypt(
-      checkoutData,
-      "node-deep-link-uuid"
-    ).toString();
+      ["interactions",
+        this.checkout.order_id,
+        location.hostname,
+        this.checkout.created_at];
+    var encryptData = window.btoa(
+      checkoutData.join("-")
+    );
     return encryptData;
   }
   async generateDeepLink() {
