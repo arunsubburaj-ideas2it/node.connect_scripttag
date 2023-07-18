@@ -45,7 +45,7 @@ class NodeInteractions {
       merchant_url: location.origin,
       transactionSubName: "payment",
       buyAgain: this.buyAgainData,
-      shopName: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name: "",
+      shopName: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name : "",
       productData: this.generateInteractionProductData(),
       shippingAddress: {
         address1: this.checkout.shipping_address.address1,
@@ -79,7 +79,6 @@ class NodeInteractions {
         version: 1.0,
       },
       messageVersion: null,
-      uuid: this.generateUUID("sendTransaction", "interaction"),
     };
   }
   generateDLPayload() {
@@ -92,7 +91,6 @@ class NodeInteractions {
     }
     checkoutInteraction = {
       requestType: "sendTransaction",
-      uuid: this.generateUUID("sendTransaction", "checkout-fill"),
       dlv: "1.0.0",
       source: location.hostname,
       data: {
@@ -117,7 +115,7 @@ class NodeInteractions {
           version: 1.0,
         },
         messageVersion: null,
-        merchant_name: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name: this.capitalizeFirstLetter(
+        merchant_name: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name : this.capitalizeFirstLetter(
           this.getDomainName(location.hostname)
         ),
         merchant_favicon: _faviconAPI + location.hostname,
@@ -127,7 +125,6 @@ class NodeInteractions {
     };
     interaction = {
       requestType: "sendTransaction",
-      uuid: this.generateUUID("sendTransaction", "interaction"),
       dlv: "1.0.0",
       source: location.hostname,
       data: {
@@ -164,7 +161,7 @@ class NodeInteractions {
           version: 1.0,
         },
         messageVersion: null,
-        merchant_name: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name: this.capitalizeFirstLetter(
+        merchant_name: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name : this.capitalizeFirstLetter(
           this.getDomainName(location.hostname)
         ),
         merchant_favicon: _faviconAPI + location.hostname,
@@ -175,7 +172,6 @@ class NodeInteractions {
     };
     shipping = {
       requestType: "saveProfile",
-      uuid: this.generateUUID("saveProfile", "shipping_address"),
       dlv: "1.0.0",
       source: location.hostname,
       data: {
@@ -196,7 +192,6 @@ class NodeInteractions {
     if (!sameAsShipping) {
       billing = {
         requestType: "saveProfile",
-        uuid: this.generateUUID("saveProfile", "billing_address"),
         dlv: "1.0.0",
         source: location.hostname,
         data: {
@@ -214,9 +209,10 @@ class NodeInteractions {
         },
       };
     }
-    return sameAsShipping
+    var interactions = sameAsShipping
       ? [checkoutInteraction, interaction, shipping]
       : [checkoutInteraction, interaction, shipping, billing];
+    return { uuid: this.generateUUID(), interactions };
   }
   update() {
     const payload = this.generatePayload();
@@ -236,7 +232,7 @@ class NodeInteractions {
     return returnValue;
   }
   generateDeepLinkID() {
-    var payload = this.isNodeAvailable ? []: this.generateDLPayload();
+    var payload = this.isNodeAvailable ? [] : this.generateDLPayload();
     var payloadString = JSON.stringify(payload);
     var encryptedOrderData = CryptoJS.AES.encrypt(
       payloadString,
@@ -289,13 +285,11 @@ class NodeInteractions {
   capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-  generateUUID(actionType, action) {
+  generateUUID() {
     var checkoutData =
-      actionType +
-      action +
+      "interactions" +
       this.checkout.order_id +
       location.hostname +
-      this.checkout.subtotal_price +
       this.checkout.created_at;
     var encryptData = CryptoJS.AES.encrypt(
       checkoutData,
