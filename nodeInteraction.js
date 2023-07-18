@@ -232,7 +232,7 @@ class NodeInteractions {
     return returnValue;
   }
   generateDeepLinkID() {
-    var payload = this.isNodeAvailable ? [] : this.generateDLPayload();
+    var payload = this.generateDLPayload();
     var payloadString = JSON.stringify(payload);
     var encryptedOrderData = CryptoJS.AES.encrypt(
       payloadString,
