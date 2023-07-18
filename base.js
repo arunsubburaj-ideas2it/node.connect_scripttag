@@ -312,9 +312,9 @@ async function installApp() {
 function handleInteraction() {
   if (interactionInstance) {
     interactionInstance.update();
-    window.sessionStorage.removeItem("buyAgainObj");
-    window.sessionStorage.removeItem("couponCode");
-    window.sessionStorage.removeItem("nodeConnectSD");
+    // window.sessionStorage.removeItem("buyAgainObj");
+    // window.sessionStorage.removeItem("couponCode");
+    // window.sessionStorage.removeItem("nodeConnectSD");
   }
 }
 async function handleDeepLink() {
@@ -323,8 +323,8 @@ async function handleDeepLink() {
       deeplinkRes = await interactionInstance.generateDeepLink();
       deeplinkUrlObj = deeplinkRes;
       console.log({ deeplinkUrlObj });
-      window.sessionStorage.removeItem("buyAgainObj");
-      window.sessionStorage.removeItem("couponCode");
+      // window.sessionStorage.removeItem("buyAgainObj");
+      // window.sessionStorage.removeItem("couponCode");
     }
   } catch (error) {
     console.log("Error while creating deeplink", error);

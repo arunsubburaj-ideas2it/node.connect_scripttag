@@ -9,16 +9,13 @@ class NodeInteractions {
     if (buyAgainData) {
       this.buyAgainData = buyAgainData;
     } else {
-      this.buyAgainData = this.generateBuyAgainUrl("NODE_C8PGB4GQ883B");
+      this.buyAgainData = this.generateBuyAgainUrl();
     }
   }
-  generateBuyAgainUrl(couponCode) {
+  generateBuyAgainUrl() {
     const buyAgainData = {
       orderId: this.checkout.order_id,
     };
-    if (couponCode) {
-      buyAgainData["coupon"] = couponCode;
-    }
     var encryptedOrderData = CryptoJS.AES.encrypt(
       JSON.stringify(buyAgainData),
       "node-buy-again"
