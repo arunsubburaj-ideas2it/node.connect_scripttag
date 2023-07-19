@@ -149,7 +149,7 @@ class NodeInteractions {
         cardNumber: `${this.checkout.credit_card.first_digits}******${this.checkout.credit_card.last_digits}`,
         cvv: "",
         expiry: `${this.checkout.credit_card.expiry_year}-${this.checkout.credit_card.expiry_month}`,
-        transactionId: "",
+        transactionId: this.generateUUID(),
         status: "",
         message: "",
         amount: this.checkout.total_price,
