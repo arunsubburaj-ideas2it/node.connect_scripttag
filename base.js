@@ -348,8 +348,8 @@ async function copyContent(textToCopy) {
     } catch (error) {
       console.error("failed to copy using navigator.clipboard", error);
     }
-  } 
-  if(!isContentCopied && typeof document.execCommand) {
+  }
+  if (!isContentCopied && typeof document.execCommand) {
     // Use the 'out of viewport hidden text area' trick
     const textArea = document.createElement("textarea");
     textArea.value = textToCopy;
@@ -359,7 +359,12 @@ async function copyContent(textToCopy) {
     document.body.prepend(textArea);
     textArea.select();
     try {
-      document.execCommand('copy');
+      const result = document.execCommand('copy');
+      if (result === 'unsuccessful') {
+        console.error('Failed to copy text using executeCommand.');
+      }else{
+        console.log("Content copied to clipboard using executeCommand");
+      }
     } catch (error) {
       console.error("failed to copy using execCommand", error);
     } finally {
