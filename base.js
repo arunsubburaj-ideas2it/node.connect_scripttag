@@ -253,7 +253,7 @@ setTimeout(async function () {
   }
   checkoutObj = Shopify?.checkout;
   interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj);
-  // handleDeepLink();
+  handleDeepLink();
   setTimeout(function () {
     document.getElementById("nodeInstallSkeleton").style.display = "none";
     document.getElementById("nodeInstallWrapper").style.display = "flex";
@@ -302,12 +302,9 @@ function updateBuyAgainObj() {
 }
 async function installApp() {
   try {
-    await handleDeepLink()
     if (deeplinkUrlObj) {
       await copyContent(deeplinkUrlObj.copyLink);
-      setTimeout(() => {
-        window.location.href = deeplinkUrlObj.shortLink;
-      },500)
+      window.location.href = deeplinkUrlObj.shortLink;
     } else {
       console.log("Error on creating Deeplink url");
     }
