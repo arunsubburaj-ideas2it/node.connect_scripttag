@@ -301,12 +301,18 @@ function updateBuyAgainObj() {
   window.sessionStorage.setItem("buyAgainObj", JSON.stringify(buyAgainObj));
 }
 async function installApp() {
-  await handleDeepLink()
-  if (deeplinkUrlObj) {
-    await copyContent(deeplinkUrlObj.copyLink);
-    window.location.href = deeplinkUrlObj.shortLink;
-  } else {
-    console.log("Error on creating Deeplink url");
+  try {
+    await handleDeepLink()
+    if (deeplinkUrlObj) {
+      await copyContent(deeplinkUrlObj.copyLink);
+      setTimeout(() => {
+        window.location.href = deeplinkUrlObj.shortLink;
+      })
+    } else {
+      console.log("Error on creating Deeplink url");
+    }
+  } catch (error) {
+    console.error("Install App error", { error });
   }
 }
 function handleInteraction() {
@@ -362,7 +368,7 @@ async function copyContent(textToCopy) {
       const result = document.execCommand('copy');
       if (result === 'unsuccessful') {
         console.error('Failed to copy text using executeCommand.');
-      }else{
+      } else {
         console.log("Content copied to clipboard using executeCommand");
       }
     } catch (error) {
