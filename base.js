@@ -338,15 +338,18 @@ async function copyContent(textToCopy) {
   // } catch (err) {
   //   console.error("Failed to copy: ", err);
   // }
+  var isContentCopied = false;
   // Navigator clipboard api needs a secure context (https)
   if (navigator.clipboard && window.isSecureContext) {
     try {
       await navigator.clipboard.writeText(textToCopy);
+      isContentCopied = true;
       console.log("Content copied to clipboard using navigator.clipboard");
     } catch (error) {
       console.error("failed to copy using navigator.clipboard", error);
     }
-  } else {
+  } 
+  if(!isContentCopied && typeof document.execCommand) {
     // Use the 'out of viewport hidden text area' trick
     const textArea = document.createElement("textarea");
     textArea.value = textToCopy;
