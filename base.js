@@ -307,7 +307,7 @@ async function installApp() {
       await copyContent(deeplinkUrlObj.copyLink);
       setTimeout(() => {
         window.location.href = deeplinkUrlObj.shortLink;
-      })
+      },500)
     } else {
       console.log("Error on creating Deeplink url");
     }
