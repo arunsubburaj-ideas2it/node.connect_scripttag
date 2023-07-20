@@ -331,12 +331,37 @@ async function handleDeepLink() {
   }
 }
 
-async function copyContent(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    console.log("Content copied to clipboard");
-  } catch (err) {
-    console.error("Failed to copy: ", err);
+async function copyContent(textToCopy) {
+  // try {
+  //   await navigator.clipboard.writeText(text);
+  //   console.log("Content copied to clipboard");
+  // } catch (err) {
+  //   console.error("Failed to copy: ", err);
+  // }
+  // Navigator clipboard api needs a secure context (https)
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      console.log("Content copied to clipboard using navigator.clipboard");
+    } catch (error) {
+      console.error("failed to copy using navigator.clipboard", error);
+    }
+  } else {
+    // Use the 'out of viewport hidden text area' trick
+    const textArea = document.createElement("textarea");
+    textArea.value = textToCopy;
+    // Move textarea out of the viewport so it's not visible
+    textArea.style.position = "absolute";
+    textArea.style.left = "-999999px";
+    document.body.prepend(textArea);
+    textArea.select();
+    try {
+      document.execCommand('copy');
+    } catch (error) {
+      console.error("failed to copy using execCommand", error);
+    } finally {
+      textArea.remove();
+    }
   }
 }
 
