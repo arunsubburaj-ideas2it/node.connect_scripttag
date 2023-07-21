@@ -305,7 +305,7 @@ class NodeInteractions {
         domainUriPrefix: FB_SUFFIX_URL,
         link: `${FB_SUFFIX_URL}?dlid=${this.generateDeepLinkID()}`,
         iosInfo: {
-          iosFallbackLink: APP_URL,
+          iosFallbackLink: location.origin.includes("nodenextgen") ? DEV_URL : APP_URL,
           iosBundleId: BUNDLE_ID,
         },
         navigationInfo: {
@@ -332,19 +332,10 @@ class NodeInteractions {
           "?dlid=" +
           this.generateDeepLinkID() +
           "&ifl=" +
-          APP_URL +
+          location.origin.includes("nodenextgen") ? DEV_URL : APP_URL +
           "&ibi=" +
           BUNDLE_ID +
-          "&_icp=1",
-        withoutDLID:
-          FB_SUFFIX_URL +
-          "?link=" +
-          FB_SUFFIX_URL +
-          "?ifl=" +
-          APP_URL +
-          "&ibi=" +
-          BUNDLE_ID +
-          "&_icp=1",
+          "&_icp=1"
       };
     } catch (error) {
       console.log("error", error);
