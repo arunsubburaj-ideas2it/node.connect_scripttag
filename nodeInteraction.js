@@ -1,4 +1,5 @@
 const APP_URL = "https://testflight.apple.com/join/L5KE67vq";
+const DEV_URL = "https://tsfr.io/rbt2kg";
 const FB_SUFFIX_URL = "https://merchantinstall.iomd.info/link";
 const BUNDLE_ID = "com.iomd.i2iautofill";
 class NodeInteractions {
@@ -35,11 +36,11 @@ class NodeInteractions {
   }
   generatePayload() {
     var decryptedShopInfo;
-    var encryptedShopInfo = window.sessionStorage.getItem("nodeConnectSD");
-    if (encryptedShopInfo) {
-      var bytes = CryptoJS.AES.decrypt(encryptedShopInfo, "node-connect-profile-data");
-      decryptedShopInfo = bytes.toString(CryptoJS.enc.Utf8);
-    }
+    // var encryptedShopInfo = window.sessionStorage.getItem("nodeConnectSD");
+    // if (encryptedShopInfo) {
+    //   var bytes = CryptoJS.AES.decrypt(encryptedShopInfo, "node-connect-profile-data");
+    //   decryptedShopInfo = bytes.toString(CryptoJS.enc.Utf8);
+    // }
     return {
       transactionName: "payment",
       merchant_url: location.origin,
@@ -84,11 +85,11 @@ class NodeInteractions {
   generateDLPayload() {
     const _faviconAPI = "https://s2.googleusercontent.com/s2/favicons?domain=";
     var interaction, billing, shipping, sameAsShipping, checkoutInteraction, decryptedShopInfo;
-    var encryptedShopInfo = window.sessionStorage.getItem("nodeConnectSD");
-    if (encryptedShopInfo) {
-      var bytes = CryptoJS.AES.decrypt(encryptedShopInfo, "node-connect-profile-data");
-      decryptedShopInfo = bytes.toString(CryptoJS.enc.Utf8);
-    }
+    // var encryptedShopInfo = window.sessionStorage.getItem("nodeConnectSD");
+    // if (encryptedShopInfo) {
+    //   var bytes = CryptoJS.AES.decrypt(encryptedShopInfo, "node-connect-profile-data");
+    //   decryptedShopInfo = bytes.toString(CryptoJS.enc.Utf8);
+    // }
     checkoutInteraction = {
       requestType: "sendTransaction",
       dlv: "1.0.0",
