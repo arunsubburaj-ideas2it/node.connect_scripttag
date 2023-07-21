@@ -300,10 +300,11 @@ class NodeInteractions {
   async generateDeepLink() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
+    var link = location.origin.includes("nodenextgen") ? `${DEV_URL}?dlid=${this.generateDeepLinkID()}` : `${FB_SUFFIX_URL}?dlid=${this.generateDeepLinkID()}`;
     var raw = JSON.stringify({
       dynamicLinkInfo: {
         domainUriPrefix: FB_SUFFIX_URL,
-        link: `${FB_SUFFIX_URL}?dlid=${this.generateDeepLinkID()}`,
+        link: link,
         iosInfo: {
           iosFallbackLink: location.origin.includes("nodenextgen") ? DEV_URL : APP_URL,
           iosBundleId: BUNDLE_ID,
@@ -333,14 +334,14 @@ class NodeInteractions {
   }
 
   fetchCopyLink() {
-    var iflURL = location.origin.includes("nodenextgen") ? DEV_URL : APP_URL;
+    var linkURL = location.origin.includes("nodenextgen") ? DEV_URL : APP_URL;
     return FB_SUFFIX_URL +
       "?link=" +
-      FB_SUFFIX_URL +
+      linkURL +
       "?dlid=" +
       this.generateDeepLinkID() +
       "&ifl=" +
-      iflURL +
+      linkURL +
       "&ibi=" +
       BUNDLE_ID +
       "&_icp=1"
