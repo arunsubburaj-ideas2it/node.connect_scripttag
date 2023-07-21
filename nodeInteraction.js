@@ -325,11 +325,29 @@ class NodeInteractions {
       var deepLinkObj = await (await fetch(url, options)).json();
       return {
         ...deepLinkObj,
-        copyLink:
-          `${FB_SUFFIX_URL}?link=${FB_SUFFIX_URL}?dlid=${this.generateDeepLinkID()}&ifl=${location.origin.includes("nodenextgen") ? DEV_URL : APP_URL}&ibi=${BUNDLE_ID}&_icp=1`
+        copyLink: this.fetchCopyLink(deepLinkObj);
       };
     } catch (error) {
       console.log("error", error);
     }
+  }
+
+  fetchCopyLink(deepLinkObj){
+    var copyLink;
+    if(location.origin.includes("nodenextgen")){
+      copyLink = deepLinkObj.shortLink
+    }else{
+      copyLink = FB_SUFFIX_URL +
+      "?link=" +
+      FB_SUFFIX_URL +
+      "?dlid=" +
+      this.generateDeepLinkID() +
+      "&ifl=" +
+      APP_URL +
+      "&ibi=" +
+      BUNDLE_ID +
+      "&_icp=1"
+    }
+    return copyLink;
   }
 }
