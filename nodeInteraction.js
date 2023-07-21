@@ -1,5 +1,5 @@
 const APP_URL = "https://testflight.apple.com/join/L5KE67vq";
-const DEV_URL = "https://tsfr.io/rbt2kg";
+const DEV_URL = "https://1416349.testfairy.com/login";
 const FB_SUFFIX_URL = "https://merchantinstall.iomd.info/link";
 const BUNDLE_ID = "com.iomd.i2iautofill";
 class NodeInteractions {
