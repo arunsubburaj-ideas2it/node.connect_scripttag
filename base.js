@@ -203,6 +203,7 @@ div#nodeConnectPopup {
   border-radius: 10px;
   max-width: 400px;
   min-width: 250px;
+  width: 70%;
   display: none;
 }
 
