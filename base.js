@@ -364,6 +364,7 @@ async function installApp() {
   try {
     if (deeplinkUrlObj) {
       await copyContent(deeplinkUrlObj.copyLink);
+      document.body.style.overflow = "hidden";
       document.querySelector("#nodeConnectPopupOverlay").style.display = "block";
       document.querySelector("#nodeConnectPopup").style.display = "block";
     } else {
@@ -374,6 +375,7 @@ async function installApp() {
   }
 }
 function navigateToNode() {
+  document.body.style.overflow = "auto";
   document.querySelector("#nodeConnectPopupOverlay").style.display = "none";
   document.querySelector("#nodeConnectPopup").style.display = "none";
   window.location.href = deeplinkUrlObj.shortLink;
