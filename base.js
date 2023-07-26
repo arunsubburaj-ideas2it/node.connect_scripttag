@@ -199,9 +199,10 @@ div#nodeConnectPopup {
   z-index: 3;
   background: #fff;
   padding: 10px;
-  box-shadow: 0px 0px 3px 0px #333;
+  box-shadow: 0px 0px 3px 1px #333;
   border-radius: 10px;
-  max-width: 250px;
+  max-width: 400px;
+  min-width: 250px;
   display: none;
 }
 
@@ -250,7 +251,7 @@ Shopify.Checkout.OrderStatus.addContentBox(`
 <div id="nodeConnectPopupOverlay"></div>
 <div id="nodeConnectPopup">
   <section>
-    <h3>The Order Information has been captured to the clipboard and it is ready to be used on the Node. App once it is installed on your device.</h3>
+    <h3>The Order Information has been copied to the clipboard and is ready for use in the Node app after installation on your device.</h3>
   </section>
   <footer>
   <button class="okBtn" onclick="navigateToNode()">
