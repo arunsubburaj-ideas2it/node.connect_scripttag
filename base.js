@@ -198,6 +198,16 @@ Shopify.Checkout.OrderStatus.addContentBox(`
     <div class="skeleton-message"></div>
     <div class="skeleton-button"></div>
 </div>
+<div id="nodeConnectPopup">
+  <section>
+    <h3>The Order Information has been captured to the clipboard and it is ready to be used on the Node. App once it is installed on your device.</h3>
+  </section>
+  <footer>
+  <button class="okBtn" onclick="navigateToNode()">
+    OK
+  </button>
+  </footer>
+</div>
 <div id="nodeInstallWrapper">
   <div class="nodeIcon"></div>
   <h2 style="text-align: center; width: 100%; margin-bottom: 10px;">Want to manage your orders and keep your personal email private?</h2>
