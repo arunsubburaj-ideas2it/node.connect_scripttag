@@ -178,6 +178,55 @@ div#nodeInstallSkeleton {
     background-color: hsl(200, 20%, 95%);
   }
 }
+
+#nodeConnectPopupOverlay{
+  position: fixed;
+  z-index: 2;
+  pointer-events: none;
+  background-color: rgba(0,0,0,0.5);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+div#nodeConnectPopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 3;
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0px 0px 3px 0px #333;
+  border-radius: 10px;
+  max-width: 250px;
+  display: none;
+}
+
+div#nodeConnectPopup > section {
+  padding: 15px 10px;
+}
+
+div#nodeConnectPopup footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#nodeConnectPopup footer> .okBtn {
+  color: #fff;
+  font-weight: bold;
+  background: #2F7C67;
+  display: block;
+  padding: 10px 10px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 80px;
+}
 `;
 var head = document.head || document.getElementsByTagName("head")[0];
 var style = document.createElement("style");
@@ -198,6 +247,7 @@ Shopify.Checkout.OrderStatus.addContentBox(`
     <div class="skeleton-message"></div>
     <div class="skeleton-button"></div>
 </div>
+<div id="nodeConnectPopupOverlay"></div>
 <div id="nodeConnectPopup">
   <section>
     <h3>The Order Information has been captured to the clipboard and it is ready to be used on the Node. App once it is installed on your device.</h3>
@@ -314,13 +364,19 @@ async function installApp() {
   try {
     if (deeplinkUrlObj) {
       await copyContent(deeplinkUrlObj.copyLink);
-      window.location.href = deeplinkUrlObj.shortLink;
+      document.querySelector("#nodeConnectPopupOverlay").style.display = "block";
+      document.querySelector("#nodeConnectPopup").style.display = "block";
     } else {
       console.log("Error on creating Deeplink url");
     }
   } catch (error) {
     console.error("Install App error", { error });
   }
+}
+function navigateToNode() {
+  document.querySelector("#nodeConnectPopupOverlay").style.display = "none";
+  document.querySelector("#nodeConnectPopup").style.display = "none";
+  window.location.href = deeplinkUrlObj.shortLink;
 }
 function handleInteraction() {
   if (interactionInstance) {
