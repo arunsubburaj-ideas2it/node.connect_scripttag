@@ -383,7 +383,9 @@ function navigateToNode() {
   document.body.style.overflow = "auto";
   document.querySelector("#nodeConnectPopupOverlay").style.display = "none";
   document.querySelector("#nodeConnectPopup").style.bottom = "-100%";
-  window.location.href = deeplinkUrlObj.shortLink;
+  setTimeout(()=>{
+    window.location.href = deeplinkUrlObj.shortLink;
+  },500)
 }
 function handleInteraction() {
   if (interactionInstance) {
