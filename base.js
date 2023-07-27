@@ -193,18 +193,21 @@ div#nodeInstallSkeleton {
 
 div#nodeConnectPopup {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
+  width: 100%;
+  bottom: -100%;
+  left: 0;
   z-index: 3;
   background: #fff;
   padding: 10px;
   box-shadow: 0px 0px 3px 1px #333;
-  border-radius: 10px;
-  max-width: 400px;
-  min-width: 250px;
-  width: 70%;
+  border-radius: 10px 10px 0 0;
   display: none;
+  box-sizing: border-box;
+  transition: all 0.5s;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 div#nodeConnectPopup > section {
@@ -368,7 +371,7 @@ async function installApp() {
       await copyContent(deeplinkUrlObj.copyLink);
       document.body.style.overflow = "hidden";
       document.querySelector("#nodeConnectPopupOverlay").style.display = "block";
-      document.querySelector("#nodeConnectPopup").style.display = "block";
+      document.querySelector("#nodeConnectPopup").style.bottom = "0px";
     } else {
       console.log("Error on creating Deeplink url");
     }
@@ -379,7 +382,7 @@ async function installApp() {
 function navigateToNode() {
   document.body.style.overflow = "auto";
   document.querySelector("#nodeConnectPopupOverlay").style.display = "none";
-  document.querySelector("#nodeConnectPopup").style.display = "none";
+  document.querySelector("#nodeConnectPopup").style.bottom = "-100%";
   window.location.href = deeplinkUrlObj.shortLink;
 }
 function handleInteraction() {
