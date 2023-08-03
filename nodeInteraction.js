@@ -35,6 +35,7 @@ class NodeInteractions {
     return buyAgainObj;
   }
   generatePayload() {
+    const shippingAddress = !this.checkout.shipping_address ? this.checkout.billing_address : this.checkout.shipping_address;
     var decryptedShopInfo;
     // var encryptedShopInfo = window.sessionStorage.getItem("nodeConnectSD");
     // if (encryptedShopInfo) {
@@ -49,14 +50,14 @@ class NodeInteractions {
       shopName: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name : "",
       productData: this.generateInteractionProductData(),
       shippingAddress: {
-        address1: this.checkout.shipping_address.address1,
-        address2: this.checkout.shipping_address.address2,
-        state: this.checkout.shipping_address.province,
-        postalCode: this.checkout.shipping_address.zip,
-        city: this.checkout.shipping_address.city,
-        country: this.checkout.shipping_address.country,
-        firstName: this.checkout.shipping_address.first_name,
-        lastName: this.checkout.shipping_address.last_name,
+        address1: shippingAddress.address1,
+        address2: shippingAddress.address2,
+        state: shippingAddress.province,
+        postalCode: shippingAddress.zip,
+        city: shippingAddress.city,
+        country: shippingAddress.country,
+        firstName: shippingAddress.first_name,
+        lastName: shippingAddress.last_name,
       },
       email: this.checkout.email,
       discount: "",
@@ -83,6 +84,7 @@ class NodeInteractions {
     };
   }
   generateDLPayload() {
+    const shippingAddress = !this.checkout.shipping_address ? this.checkout.billing_address : this.checkout.shipping_address;
     const _faviconAPI = "https://s2.googleusercontent.com/s2/favicons?domain=";
     var interaction, billing, shipping, sameAsShipping, checkoutInteraction, decryptedShopInfo;
     // var encryptedShopInfo = window.sessionStorage.getItem("nodeConnectSD");
@@ -98,14 +100,14 @@ class NodeInteractions {
         transactionName: "checkout fill",
         merchant_url: location.origin,
         transactionSubName: "checkout fill",
-        address1: this.checkout.shipping_address.address1 ?? "",
-        address2: this.checkout.shipping_address.address2 ?? "",
-        state: this.checkout.shipping_address.province ?? "",
-        postalCode: this.checkout.shipping_address.zip ?? "",
-        city: this.checkout.shipping_address.city ?? "",
-        country: this.checkout.shipping_address.country ?? "",
-        firstName: this.checkout.shipping_address.first_name ?? "",
-        lastName: this.checkout.shipping_address.last_name ?? "",
+        address1: shippingAddress.address1 ?? "",
+        address2: shippingAddress.address2 ?? "",
+        state: shippingAddress.province ?? "",
+        postalCode: shippingAddress.zip ?? "",
+        city: shippingAddress.city ?? "",
+        country: shippingAddress.country ?? "",
+        firstName: shippingAddress.first_name ?? "",
+        lastName: shippingAddress.last_name ?? "",
         email: this.checkout.email ?? "",
         timestamp: new Date(Date.now()),
         discount: "",
@@ -134,14 +136,14 @@ class NodeInteractions {
         transactionSubName: "payment",
         buyAgain: this.buyAgainData,
         productData: this.generateInteractionProductData(),
-        address1: this.checkout.shipping_address.address1 ?? "",
-        address2: this.checkout.shipping_address.address2 ?? "",
-        state: this.checkout.shipping_address.province ?? "",
-        postalCode: this.checkout.shipping_address.zip ?? "",
-        city: this.checkout.shipping_address.city ?? "",
-        country: this.checkout.shipping_address.country ?? "",
-        firstName: this.checkout.shipping_address.first_name ?? "",
-        lastName: this.checkout.shipping_address.last_name ?? "",
+        address1: shippingAddress.address1 ?? "",
+        address2: shippingAddress.address2 ?? "",
+        state: shippingAddress.province ?? "",
+        postalCode: shippingAddress.zip ?? "",
+        city: shippingAddress.city ?? "",
+        country: shippingAddress.country ?? "",
+        firstName: shippingAddress.first_name ?? "",
+        lastName: shippingAddress.last_name ?? "",
         email: this.checkout.email ?? "",
         discount: this.checkout.discount ?? "",
         coupon: "",
@@ -176,14 +178,14 @@ class NodeInteractions {
       dlv: "1.0.0",
       source: location.hostname,
       data: {
-        address1: this.checkout.shipping_address.address1 ?? "",
-        address2: this.checkout.shipping_address.address2 ?? "",
-        state: this.checkout.shipping_address.province ?? "",
-        postalCode: this.checkout.shipping_address.zip ?? "",
-        city: this.checkout.shipping_address.city ?? "",
-        country: this.checkout.shipping_address.country ?? "",
-        firstName: this.checkout.shipping_address.first_name ?? "",
-        lastName: this.checkout.shipping_address.last_name ?? "",
+        address1: shippingAddress.address1 ?? "",
+        address2: shippingAddress.address2 ?? "",
+        state: shippingAddress.province ?? "",
+        postalCode: shippingAddress.zip ?? "",
+        city: shippingAddress.city ?? "",
+        country: shippingAddress.country ?? "",
+        firstName: shippingAddress.first_name ?? "",
+        lastName: shippingAddress.last_name ?? "",
         email: this.checkout.email ?? "",
         phone: this.checkout.phone ?? "",
         isAnonymous: false,
@@ -229,7 +231,7 @@ class NodeInteractions {
   compareAddress() {
     var returnValue = false;
     var keys = Object.keys(this.checkout.billing_address);
-    returnValue = keys.every(key => this.checkout.billing_address[key] == this.checkout.shipping_address[key]);
+    returnValue = keys.every(key => this.checkout.billing_address[key] == shippingAddress[key]);
     return returnValue;
   }
   generateDeepLinkID() {
