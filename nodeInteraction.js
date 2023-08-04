@@ -231,7 +231,9 @@ class NodeInteractions {
   compareAddress() {
     var returnValue = false;
     var keys = Object.keys(this.checkout.billing_address);
-    returnValue = keys.every(key => this.checkout.billing_address[key] == shippingAddress[key]);
+    if(this.checkout?.shipping_address){
+      returnValue = keys.every(key => this.checkout.billing_address[key] == this.checkout.shipping_address[key]);
+    }
     return returnValue;
   }
   generateDeepLinkID() {
