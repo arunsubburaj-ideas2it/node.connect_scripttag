@@ -92,6 +92,17 @@ div#nodeInstallWrapper>div {
   max-width: 60%;
 }
 
+@media all and (max-width: 450px) {
+  .productInfo {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .productName {
+    max-width: 100%;
+  }
+}
+
 div#lineItems {
   display: flex;
   flex-direction: column;
