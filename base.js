@@ -81,6 +81,7 @@ div#nodeInstallWrapper>div {
   align-items: center;
   font-weight: bold;
   justify-content: space-between;
+  width: 100%;
 }
 
 .productInfo>div {
