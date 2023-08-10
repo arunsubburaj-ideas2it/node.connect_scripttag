@@ -1,3 +1,6 @@
+var fonts = `<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap" rel="stylesheet">`
 var css = `
 #nodeInstallWrapper {
   justify-content: center;
@@ -196,22 +199,30 @@ div#nodeConnectPopup {
   width: 100%;
   bottom: -100%;
   left: 0;
+  color: #fff;
   z-index: 3;
-  background: #fff;
+  background: #1E1D21;
   padding: 10px;
   box-shadow: 0px 0px 3px 1px #333;
   border-radius: 10px 10px 0 0;
   display: none;
   box-sizing: border-box;
-  transition: all 0.5s;
-  height: 200px;
+  transition: all 0.75s;
+  height: 30vh;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 div#nodeConnectPopup > section {
   padding: 15px 10px;
+}
+
+div#nodeConnectPopup h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  color: #fff;
 }
 
 div#nodeConnectPopup footer {
@@ -222,7 +233,7 @@ div#nodeConnectPopup footer {
 #nodeConnectPopup footer> .okBtn {
   color: #fff;
   font-weight: bold;
-  background: #2F7C67;
+  background: #8777F2;
   display: block;
   padding: 10px 10px 10px;
   border-radius: 5px;
@@ -234,6 +245,7 @@ div#nodeConnectPopup footer {
 }
 `;
 var head = document.head || document.getElementsByTagName("head")[0];
+head.innerHTML += fonts;
 var style = document.createElement("style");
 var deeplinkUrlObj, checkoutObj, interactionInstance;
 head.appendChild(style);
@@ -369,9 +381,13 @@ async function installApp() {
   try {
     if (deeplinkUrlObj) {
       await copyContent(deeplinkUrlObj.copyLink);
-      document.body.style.overflow = "hidden";
-      document.querySelector("#nodeConnectPopupOverlay").style.display = "block";
-      document.querySelector("#nodeConnectPopup").style.bottom = "0px";
+      if (isNodeAvailable) {
+        window.location.href = deeplinkUrlObj.shortLink;
+      } else {
+        document.body.style.overflow = "hidden";
+        document.querySelector("#nodeConnectPopupOverlay").style.display = "block";
+        document.querySelector("#nodeConnectPopup").style.bottom = "0px";
+      }
     } else {
       console.log("Error on creating Deeplink url");
     }
@@ -383,9 +399,9 @@ function navigateToNode() {
   document.body.style.overflow = "auto";
   document.querySelector("#nodeConnectPopupOverlay").style.display = "none";
   document.querySelector("#nodeConnectPopup").style.bottom = "-100%";
-  setTimeout(()=>{
+  setTimeout(() => {
     window.location.href = deeplinkUrlObj.shortLink;
-  },500)
+  }, 800)
 }
 function handleInteraction() {
   if (interactionInstance) {
