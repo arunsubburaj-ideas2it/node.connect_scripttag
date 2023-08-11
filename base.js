@@ -268,26 +268,27 @@ if (style.styleSheet) {
 } else {
   style.appendChild(document.createTextNode(css));
 }
-
-Shopify.Checkout.OrderStatus.addContentBox(`
-<div id="nodeInstallSkeleton">
-    <div class="nodeIcon"></div>
-    <div class="skeleton-heading"></div>
-    <div class="skeleton-message"></div>
-    <div class="skeleton-button"></div>
-</div>
-<div id="nodeConnectPopupOverlay"></div>
-<div id="nodeConnectPopup">
-  <section>
-    <h3>The Order Information has been copied to the clipboard and is ready for use in the Node app after installation on your device.</h3>
-  </section>
-  <footer>
-  <button class="okBtn" onclick="navigateToNode()">
-    OK
-  </button>
-  </footer>
-</div>
-<div id="nodeInstallWrapper">
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent) 
+if(isSafari && navigator.userAgent.match(/iPhone|iPod|iPad|Mac/i)){
+  Shopify.Checkout.OrderStatus.addContentBox(`
+  <div id="nodeInstallSkeleton">
+      <div class="nodeIcon"></div>
+      <div class="skeleton-heading"></div>
+      <div class="skeleton-message"></div>
+      <div class="skeleton-button"></div>
+  </div>
+  <div id="nodeConnectPopupOverlay"></div>
+  <div id="nodeConnectPopup">
+    <section>
+      <h3>The Order Information has been copied to the clipboard and is ready for use in the Node app after installation on your device.</h3>
+    </section>
+    <footer>
+    <button class="okBtn" onclick="navigateToNode()">
+      OK
+    </button>
+    </footer>
+  </div>
+  <div id="nodeInstallWrapper">
   <div class="nodeIcon"></div>
   <h2 style="text-align: center; width: 100%; margin-bottom: 10px;">Want to manage your orders and keep your personal email private?</h2>
   <div class="benefits" style="text-align: left;
@@ -310,7 +311,8 @@ Shopify.Checkout.OrderStatus.addContentBox(`
   </div>
   <div id="lineItems">
   </div>
-</div>`);
+  </div>`);
+}
 var nodeContentBox = Array.from(
   document.querySelectorAll(".content-box")
 ).filter((currentEle) => currentEle.querySelector("#nodeInstallWrapper"));
