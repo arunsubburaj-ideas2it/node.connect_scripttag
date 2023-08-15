@@ -305,6 +305,9 @@ class NodeInteractions {
       dynamicLinkInfo: {
         domainUriPrefix: FB_SUFFIX_URL,
         link: link,
+        androidInfo: {
+          androidFallbackLink: location.origin.includes("nodenextgen") ? DEV_URL : APP_URL,
+        },
         iosInfo: {
           iosFallbackLink: location.origin.includes("nodenextgen") ? DEV_URL : APP_URL,
           iosBundleId: BUNDLE_ID,
