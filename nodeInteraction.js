@@ -300,7 +300,7 @@ class NodeInteractions {
   async generateDeepLink() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    var link = location.origin.includes("nodenextgen") ? `${DEV_URL}?dlid=${this.generateDeepLinkID()}` : `${FB_SUFFIX_URL}?dlid=${this.generateDeepLinkID()}`;
+    var link = location.origin.includes("nodenextgen") ? `${DEV_URL}?dlid=${this.generateDeepLinkID()}` : `${APP_URL}?dlid=${this.generateDeepLinkID()}`;
     var raw = JSON.stringify({
       dynamicLinkInfo: {
         domainUriPrefix: FB_SUFFIX_URL,
