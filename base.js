@@ -406,7 +406,7 @@ async function installApp() {
       if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.toggleMessageHandler) {
         window.webkit.messageHandlers.toggleMessageHandler.postMessage({
           "message": "updateInteraction",
-          "data": deeplinkId
+          "data": {deeplinkId}
         });
       }
     } else {
