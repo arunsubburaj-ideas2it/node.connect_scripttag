@@ -311,6 +311,16 @@ Shopify.Checkout.OrderStatus.addContentBox(`
   <div id="lineItems">
   </div>
 </div>`);
+if (getBrowser() == "ios_webview") {
+  var nodeContentBox = Array.from(
+    document.querySelectorAll(".content-box")
+  ).filter((currentEle) => currentEle.querySelector("#nodeInstallWrapper"));
+  if (nodeContentBox.length > 0) {
+    nodeContentBox[0].querySelector("#nodeInstallWrapper h2").innerText = "Your order has automatically and instantly been added to your node."
+    nodeContentBox[0].querySelector("#nodeInstallWrapper .benefits").style.display = "none";
+    nodeContentBox[0].querySelector("#deepLink .buttonMsg").innerHTML = "See your order on your node<span class='nodeDot'>.</span>"
+  }
+}
 var nodeContentBox = Array.from(
   document.querySelectorAll(".content-box")
 ).filter((currentEle) => currentEle.querySelector("#nodeInstallWrapper"));
@@ -341,7 +351,7 @@ setTimeout(async function () {
     buyAgainObj = null;
   }
   checkoutObj = Shopify?.checkout;
-  interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj);
+  interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj, getBrowser());
   handleDeepLink();
   setTimeout(function () {
     document.getElementById("nodeInstallSkeleton").style.display = "none";
@@ -426,9 +436,19 @@ function handleInteraction() {
 async function handleDeepLink() {
   try {
     if (interactionInstance) {
-      deeplinkRes = await interactionInstance.generateDeepLink();
-      deeplinkUrlObj = deeplinkRes;
-      console.log({ deeplinkUrlObj });
+      if (getBrowser() == "ios_webview") {
+        var deeplinkId = await interactionInstance.generateDeepLinkID();
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.toggleMessageHandler) {
+          window.webkit.messageHandlers.toggleMessageHandler.postMessage({
+            "message": "updateInteraction",
+            "data": deeplinkId
+          });
+        }
+      } else {
+        deeplinkRes = await interactionInstance.generateDeepLink();
+        deeplinkUrlObj = deeplinkRes;
+        console.log({ deeplinkUrlObj });
+      }
       // window.sessionStorage.removeItem("buyAgainObj");
       // window.sessionStorage.removeItem("couponCode");
     }
@@ -514,4 +534,20 @@ function generatePriceString(price) {
   const parts = numberFormat.format(price);
   console.log(parts);
   return parts;
+}
+
+
+function getBrowser() {
+  var userAgent = window.navigator.userAgent.toLowerCase(),
+    safari = /safari/.test(userAgent),
+    ios = /iphone|ipod|ipad/.test(userAgent);
+  if (ios) {
+    if (safari) {
+      return "ios_safari";
+    } else if (!safari) {
+      return "ios_webview";
+    };
+  } else {
+    return "non_ios";
+  };
 }

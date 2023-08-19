@@ -3,10 +3,11 @@ const DEV_URL = "https://1416349.testfairy.com/login";
 const FB_SUFFIX_URL = "https://merchantinstall.iomd.info/link";
 const BUNDLE_ID = "com.iomd.i2iautofill";
 class NodeInteractions {
-  constructor(checkout, buyAgainData) {
+  constructor(checkout, buyAgainData, browserType) {
     this.isNodeAvailable = false;
     this.checkout = checkout;
     this.buyAgainData = buyAgainData;
+    this.browserType = browserType
     if (buyAgainData) {
       this.buyAgainData = buyAgainData;
     } else {
@@ -36,11 +37,6 @@ class NodeInteractions {
   }
   generatePayload() {
     var decryptedShopInfo;
-    // var encryptedShopInfo = window.sessionStorage.getItem("nodeConnectSD");
-    // if (encryptedShopInfo) {
-    //   var bytes = CryptoJS.AES.decrypt(encryptedShopInfo, "node-connect-profile-data");
-    //   decryptedShopInfo = bytes.toString(CryptoJS.enc.Utf8);
-    // }
     return {
       transactionName: "payment",
       merchant_url: location.origin,
@@ -210,9 +206,14 @@ class NodeInteractions {
         },
       };
     }
-    var interactions = sameAsShipping
+    var interactions;
+    if(this.browserType == "ios_webview"){
+      interactions = [checkoutInteraction, interaction];
+    }else{
+     interactions = sameAsShipping
       ? [checkoutInteraction, interaction, shipping]
       : [checkoutInteraction, interaction, shipping, billing];
+    }
     return { uuid: this.generateUUID(), interactions };
   }
   update() {
