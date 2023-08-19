@@ -401,17 +401,27 @@ function updateBuyAgainObj() {
 }
 async function installApp() {
   try {
-    if (deeplinkUrlObj) {
-      await copyContent(deeplinkUrlObj.copyLink);
-      if (isNodeAvailable) {
-        window.location.href = deeplinkUrlObj.shortLink;
-      } else {
-        document.body.style.overflow = "hidden";
-        document.querySelector("#nodeConnectPopupOverlay").style.display = "block";
-        document.querySelector("#nodeConnectPopup").style.bottom = "0px";
+    if (getBrowser() == "ios_webview") {
+      var deeplinkId = await interactionInstance.generateDeepLinkID();
+      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.toggleMessageHandler) {
+        window.webkit.messageHandlers.toggleMessageHandler.postMessage({
+          "message": "updateInteraction",
+          "data": deeplinkId
+        });
       }
     } else {
-      console.log("Error on creating Deeplink url");
+      if (deeplinkUrlObj) {
+        await copyContent(deeplinkUrlObj.copyLink);
+        if (isNodeAvailable) {
+          window.location.href = deeplinkUrlObj.shortLink;
+        } else {
+          document.body.style.overflow = "hidden";
+          document.querySelector("#nodeConnectPopupOverlay").style.display = "block";
+          document.querySelector("#nodeConnectPopup").style.bottom = "0px";
+        }
+      } else {
+        console.log("Error on creating Deeplink url");
+      }
     }
   } catch (error) {
     console.error("Install App error", { error });
@@ -436,19 +446,9 @@ function handleInteraction() {
 async function handleDeepLink() {
   try {
     if (interactionInstance) {
-      if (getBrowser() == "ios_webview") {
-        var deeplinkId = await interactionInstance.generateDeepLinkID();
-        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.toggleMessageHandler) {
-          window.webkit.messageHandlers.toggleMessageHandler.postMessage({
-            "message": "updateInteraction",
-            "data": deeplinkId
-          });
-        }
-      } else {
-        deeplinkRes = await interactionInstance.generateDeepLink();
-        deeplinkUrlObj = deeplinkRes;
-        console.log({ deeplinkUrlObj });
-      }
+      deeplinkRes = await interactionInstance.generateDeepLink();
+      deeplinkUrlObj = deeplinkRes;
+      console.log({ deeplinkUrlObj });
       // window.sessionStorage.removeItem("buyAgainObj");
       // window.sessionStorage.removeItem("couponCode");
     }
