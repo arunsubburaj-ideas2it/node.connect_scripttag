@@ -420,6 +420,14 @@ function navigateToNode() {
 function handleInteraction() {
   if (interactionInstance) {
     interactionInstance.update();
+    window.postMessage(
+      {
+        type: "removeCartData",
+        data: window.sessionStorage.getItem('cartId')
+      },
+      "*"
+    );
+    window.sessionStorage.removeItem('cartId');
     // window.sessionStorage.removeItem("buyAgainObj");
     // window.sessionStorage.removeItem("couponCode");
     // window.sessionStorage.removeItem("nodeConnectSD");
