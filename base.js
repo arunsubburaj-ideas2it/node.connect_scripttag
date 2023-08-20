@@ -402,7 +402,7 @@ function updateBuyAgainObj() {
 async function installApp() {
   try {
     if (getBrowser() == "ios_webview") {
-      var deeplinkId = await interactionInstance.generateDeepLinkID();
+      var deeplinkId = await interactionInstance.generateDLPayload();
       if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.toggleMessageHandler) {
         window.webkit.messageHandlers.toggleMessageHandler.postMessage({
           "message": "updateInteraction",
