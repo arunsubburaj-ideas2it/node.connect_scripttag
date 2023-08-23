@@ -282,7 +282,7 @@ div#nodeConnectPopup footer {
 var head = document.head || document.getElementsByTagName("head")[0];
 head.innerHTML += fonts;
 var style = document.createElement("style");
-var deeplinkUrlObj, checkoutObj, interactionInstance;
+var deeplinkUrlObj, checkoutObj, interactionInstance, isNodeAvailable;
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const isIphone = navigator.userAgent.match(/iPhone|iPod|iPad|Mac/i);
 head.appendChild(style);
@@ -352,7 +352,7 @@ if (style.styleSheet) {
     document.querySelector("#nodeInstallWrapper .orderNo").innerText = document.querySelector(".os-order-number").innerText;
     document.querySelector("#nodeInstallWrapper .orderInfo .email").innerText = Shopify.checkout.email;
   }
-  var isNodeAvailable = false;
+  isNodeAvailable = false;
   setTimeout(async function () {
     window.postMessage(
       {
