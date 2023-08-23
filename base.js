@@ -220,7 +220,6 @@ div#nodeConnectPopup {
   display: none;
   box-sizing: border-box;
   transition: all 0.75s;
-  height: 30vh;
   min-height: 200px;
   display: flex;
   flex-direction: column;
@@ -229,18 +228,29 @@ div#nodeConnectPopup {
 }
 
 div#nodeConnectPopup > section {
-  padding: 15px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: center;
+  font-weight: 700;
+}
+
+section> * {
+  margin: 15px 0;
+  font-weight: bold;
 }
 
 #nodeConnectPopup .fileIcon{
   padding: 20px;
-  margin: 0 auto;
+  margin: 0;
   display: inline-block;
 }
 
 #nodeConnectPopup .message {
   background-color: #2C2B2F;
-  padding: 10px;
+  padding: 20px;
+  width: 100%;
+  text-align: center;
 }
 #nodeConnectPopup .blueText {
   color: #4386E4;
@@ -248,7 +258,7 @@ div#nodeConnectPopup > section {
 
 div#nodeConnectPopup footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 #nodeConnectPopup footer> .okBtn {
@@ -262,7 +272,11 @@ div#nodeConnectPopup footer {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 70%;
   min-width: 80px;
+  height: 35px;
+  margin-bottom: 20px;
+  border-radius: 18px;
 }
 `;
 var head = document.head || document.getElementsByTagName("head")[0];
@@ -294,7 +308,7 @@ Shopify.Checkout.OrderStatus.addContentBox(`
           <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M780-160H260q-24 0-42-18t-18-42v-640q0-24 18-42t42-18h348l232 232v468q0 24-18 42t-42 18ZM578-662v-198H260v640h520v-442H578ZM140-40q-24 0-42-18t-18-42v-619h60v619h498v60H140Zm120-820v198-198 640-640Z"/></svg>
         </div>
         <p class='heading'>Order Copied to Clipboard</p>
-        <div class="message"><span class='blueText'>Allow Paste</span> from Safari when you open your Node App.</div>
+        <div class="message"><span class='blueText'>Allow Paste &nbsp;</span> from Safari when </br> you open your Node App.</div>
       </section>
       <footer>
       <button class="okBtn" onclick="navigateToNode()">
