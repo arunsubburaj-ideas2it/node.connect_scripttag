@@ -294,7 +294,7 @@ if (style.styleSheet) {
   style.appendChild(document.createTextNode(css));
 }
 (function () {
-  // if (!(isSafari && isIphone)) return;
+  if (!(isSafari && isIphone)) return;
   Shopify.Checkout.OrderStatus.addContentBox(`
     <div id="nodeInstallSkeleton">
         <div class="nodeIcon"></div>
