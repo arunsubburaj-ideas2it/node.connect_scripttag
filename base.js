@@ -269,6 +269,8 @@ var head = document.head || document.getElementsByTagName("head")[0];
 head.innerHTML += fonts;
 var style = document.createElement("style");
 var deeplinkUrlObj, checkoutObj, interactionInstance;
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+const isIphone = navigator.userAgent.match(/iPhone|iPod|iPad|Mac/i);
 head.appendChild(style);
 
 if (style.styleSheet) {
@@ -277,9 +279,8 @@ if (style.styleSheet) {
 } else {
   style.appendChild(document.createTextNode(css));
 }
-const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
-if (isSafari && navigator.userAgent.match(/iPhone|iPod|iPad|Mac/i)) {
-  Shopify.Checkout.OrderStatus.addContentBox(`
+// if (!(isSafari && isIphone)) return;
+Shopify.Checkout.OrderStatus.addContentBox(`
     <div id="nodeInstallSkeleton">
         <div class="nodeIcon"></div>
         <div class="skeleton-heading"></div>
@@ -325,7 +326,6 @@ if (isSafari && navigator.userAgent.match(/iPhone|iPod|iPad|Mac/i)) {
       <div id="lineItems">
       </div>
       </div>`);
-}
 var nodeContentBox = Array.from(
   document.querySelectorAll(".content-box")
 ).filter((currentEle) => currentEle.querySelector("#nodeInstallWrapper"));
@@ -363,6 +363,7 @@ setTimeout(async function () {
     document.getElementById("nodeInstallWrapper").style.display = "flex";
   }, 2000);
 }, 350);
+
 window.addEventListener("message", (event) => {
   if (event?.data?.type == "nodeAvailable") {
     isNodeAvailable = true;
@@ -512,10 +513,6 @@ function renderLineItems() {
                   </div>
               </div>
           `;
-    // var separater = "<div class='separator'></div>";
-    // if (lineItems.length != 1 && index != lineItems.length - 1) {
-    //   cards += separater;
-    // }
   });
   document.getElementById("lineItems").innerHTML = cards;
 }
