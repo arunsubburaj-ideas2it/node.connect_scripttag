@@ -214,7 +214,7 @@ div#nodeConnectPopup {
   color: #fff;
   z-index: 3;
   background: #1E1D21;
-  padding: 10px;
+  padding: 30px 0;
   box-shadow: 0px 0px 3px 1px #333;
   border-radius: 10px 10px 0 0;
   display: none;
@@ -236,7 +236,7 @@ div#nodeConnectPopup > section {
 }
 
 section> * {
-  margin: 15px 0;
+  margin: 15px 0 0 0;
   font-weight: bold;
 }
 
@@ -249,6 +249,7 @@ section> * {
 #nodeConnectPopup .message {
   background-color: #2C2B2F;
   padding: 20px;
+  margin-bottom: 30px;
   width: 100%;
   text-align: center;
 }
@@ -275,7 +276,6 @@ div#nodeConnectPopup footer {
   width: 70%;
   min-width: 80px;
   height: 35px;
-  margin-bottom: 20px;
   border-radius: 18px;
 }
 `;
@@ -305,7 +305,7 @@ Shopify.Checkout.OrderStatus.addContentBox(`
     <div id="nodeConnectPopup">
       <section>
         <div class="fileIcon">
-          <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M780-160H260q-24 0-42-18t-18-42v-640q0-24 18-42t42-18h348l232 232v468q0 24-18 42t-42 18ZM578-662v-198H260v640h520v-442H578ZM140-40q-24 0-42-18t-18-42v-619h60v619h498v60H140Zm120-820v198-198 640-640Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" height="45" viewBox="0 -960 960 960" width="45"><path d="M140-40q-24 0-42-18t-18-42v-619h60v619h498v60H140Zm120-120q-24 0-42-18t-18-42v-640q0-24 18-42t42-18h348l232 232v468q0 24-18 42t-42 18H260Zm318-502h202L578-860v198Z"/></svg>
         </div>
         <p class='heading'>Order Copied to Clipboard</p>
         <div class="message"><span class='blueText'>Allow Paste &nbsp;</span> from Safari when </br> you open your Node App.</div>
