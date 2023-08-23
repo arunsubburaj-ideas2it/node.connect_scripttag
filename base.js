@@ -241,9 +241,9 @@ section> * {
 }
 
 #nodeConnectPopup .fileIcon{
-  padding: 20px;
   margin: 0;
   display: inline-block;
+  fill: #fff;
 }
 
 #nodeConnectPopup .message {
