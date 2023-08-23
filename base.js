@@ -293,8 +293,9 @@ if (style.styleSheet) {
 } else {
   style.appendChild(document.createTextNode(css));
 }
-if (!(isSafari && isIphone)) return;
-Shopify.Checkout.OrderStatus.addContentBox(`
+(function () {
+  if (!(isSafari && isIphone)) return;
+  Shopify.Checkout.OrderStatus.addContentBox(`
     <div id="nodeInstallSkeleton">
         <div class="nodeIcon"></div>
         <div class="skeleton-heading"></div>
@@ -340,44 +341,44 @@ Shopify.Checkout.OrderStatus.addContentBox(`
       <div id="lineItems">
       </div>
       </div>`);
-var nodeContentBox = Array.from(
-  document.querySelectorAll(".content-box")
-).filter((currentEle) => currentEle.querySelector("#nodeInstallWrapper"));
-if (nodeContentBox.length > 0) {
-  document.querySelector(".section__content").prepend(nodeContentBox[0]);
-}
-if (Shopify.checkout) {
-  renderLineItems();
-  document.querySelector("#nodeInstallWrapper .orderNo").innerText = document.querySelector(".os-order-number").innerText;
-  document.querySelector("#nodeInstallWrapper .orderInfo .email").innerText = Shopify.checkout.email;
-}
-var isNodeAvailable = false;
-setTimeout(async function () {
-  window.postMessage(
-    {
-      type: "IsNodeAvailable",
-      data: window.location.href,
-    },
-    "*"
-  );
-  var isBuyAgainExist =
-    window.sessionStorage.getItem("buyAgainObj")?.length > 0;
-  var buyAgainObj;
-  if (isBuyAgainExist) {
-    updateBuyAgainObj();
-    buyAgainObj = JSON.parse(window.sessionStorage.getItem("buyAgainObj"));
-  } else {
-    buyAgainObj = null;
+  var nodeContentBox = Array.from(
+    document.querySelectorAll(".content-box")
+  ).filter((currentEle) => currentEle.querySelector("#nodeInstallWrapper"));
+  if (nodeContentBox.length > 0) {
+    document.querySelector(".section__content").prepend(nodeContentBox[0]);
   }
-  checkoutObj = Shopify?.checkout;
-  interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj);
-  handleDeepLink();
-  setTimeout(function () {
-    document.getElementById("nodeInstallSkeleton").style.display = "none";
-    document.getElementById("nodeInstallWrapper").style.display = "flex";
-  }, 2000);
-}, 350);
-
+  if (Shopify.checkout) {
+    renderLineItems();
+    document.querySelector("#nodeInstallWrapper .orderNo").innerText = document.querySelector(".os-order-number").innerText;
+    document.querySelector("#nodeInstallWrapper .orderInfo .email").innerText = Shopify.checkout.email;
+  }
+  var isNodeAvailable = false;
+  setTimeout(async function () {
+    window.postMessage(
+      {
+        type: "IsNodeAvailable",
+        data: window.location.href,
+      },
+      "*"
+    );
+    var isBuyAgainExist =
+      window.sessionStorage.getItem("buyAgainObj")?.length > 0;
+    var buyAgainObj;
+    if (isBuyAgainExist) {
+      updateBuyAgainObj();
+      buyAgainObj = JSON.parse(window.sessionStorage.getItem("buyAgainObj"));
+    } else {
+      buyAgainObj = null;
+    }
+    checkoutObj = Shopify?.checkout;
+    interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj);
+    handleDeepLink();
+    setTimeout(function () {
+      document.getElementById("nodeInstallSkeleton").style.display = "none";
+      document.getElementById("nodeInstallWrapper").style.display = "flex";
+    }, 2000);
+  }, 350);
+})();
 window.addEventListener("message", (event) => {
   if (event?.data?.type == "nodeAvailable") {
     isNodeAvailable = true;
