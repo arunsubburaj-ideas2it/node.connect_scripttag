@@ -225,16 +225,25 @@ div#nodeConnectPopup {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
 div#nodeConnectPopup > section {
   padding: 15px 10px;
 }
 
-div#nodeConnectPopup h3 {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
-  color: #fff;
+#nodeConnectPopup .fileIcon{
+  padding: 20px;
+  margin: 0 auto;
+  display: inline-block;
+}
+
+#nodeConnectPopup .message {
+  background-color: #2C2B2F;
+  padding: 10px;
+}
+#nodeConnectPopup .blueText {
+  color: #4386E4;
 }
 
 div#nodeConnectPopup footer {
@@ -268,50 +277,54 @@ if (style.styleSheet) {
 } else {
   style.appendChild(document.createTextNode(css));
 }
-const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent) 
-if(isSafari && navigator.userAgent.match(/iPhone|iPod|iPad|Mac/i)){
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+if (isSafari && navigator.userAgent.match(/iPhone|iPod|iPad|Mac/i)) {
   Shopify.Checkout.OrderStatus.addContentBox(`
-  <div id="nodeInstallSkeleton">
+    <div id="nodeInstallSkeleton">
+        <div class="nodeIcon"></div>
+        <div class="skeleton-heading"></div>
+        <div class="skeleton-message"></div>
+        <div class="skeleton-button"></div>
+    </div>
+    <div id="nodeConnectPopupOverlay"></div>
+    <div id="nodeConnectPopup">
+      <section>
+        <div class="fileIcon">
+          <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48"><path d="M780-160H260q-24 0-42-18t-18-42v-640q0-24 18-42t42-18h348l232 232v468q0 24-18 42t-42 18ZM578-662v-198H260v640h520v-442H578ZM140-40q-24 0-42-18t-18-42v-619h60v619h498v60H140Zm120-820v198-198 640-640Z"/></svg>
+        </div>
+        <p class='heading'>Order Copied to Clipboard</p>
+        <div class="message"><span class='blueText'>Allow Paste</span> from Safari when you open your Node App.</div>
+      </section>
+      <footer>
+      <button class="okBtn" onclick="navigateToNode()">
+        Got it
+      </button>
+      </footer>
+    </div>
+    <div id="nodeInstallWrapper">
       <div class="nodeIcon"></div>
-      <div class="skeleton-heading"></div>
-      <div class="skeleton-message"></div>
-      <div class="skeleton-button"></div>
-  </div>
-  <div id="nodeConnectPopupOverlay"></div>
-  <div id="nodeConnectPopup">
-    <section>
-      <h3>The Order Information has been copied to the clipboard and is ready for use in the Node app after installation on your device.</h3>
-    </section>
-    <footer>
-    <button class="okBtn" onclick="navigateToNode()">
-      OK
-    </button>
-    </footer>
-  </div>
-  <div id="nodeInstallWrapper">
-  <div class="nodeIcon"></div>
-  <h2 style="text-align: center; width: 100%; margin-bottom: 10px;">Want to manage your orders and keep your personal email private?</h2>
-  <div class="benefits" style="text-align: left;
-  ">Get a tokenized email to prevent spam and phishing attempts. Save and manage all your orders instantly and
-      securely only on your phone using <b>node.</b></div>
-  <button id="deepLink" onclick="installApp()">
-      <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 -960 960 960" width="16"
-          style="fill: #fff;margin-right: 5px;">
-          <path
-              d="M263.717-96Q234-96 213-117.15T192-168v-384q0-29.7 21.15-50.85Q234.3-624 264-624h24v-96q0-79.68 56.226-135.84t136-56.16Q560-912 616-855.84T672-720v96h24q29.7 0 50.85 21.15Q768-581.7 768-552v384q0 29.7-21.162 50.85Q725.676-96 695.96-96H263.717Zm.283-72h432v-384H264v384Zm216.212-120Q510-288 531-309.212q21-21.213 21-51Q552-390 530.788-411q-21.213-21-51-21Q450-432 429-410.788q-21 21.213-21 51Q408-330 429.212-309q21.213 21 51 21ZM360-624h240v-96q0-50-35-85t-85-35q-50 0-85 35t-35 85v96Zm-96 456v-384 384Z">
-          </path>
-      </svg>
-      <span class="buttonMsg">Securely manage orders with node<span class="nodeDot">.</span></span>
-  </button>
-  <div style=" color: #afafaf; font-size: 12px;">100% private. Instant &amp; secure access on your phone.</div>
-  <div class="separator"></div>
-  <div class="orderInfo">
-      <div class="orderNo"></div>
-      <div class="email"></div>
-  </div>
-  <div id="lineItems">
-  </div>
-  </div>`);
+      <h2 style="text-align: center; width: 100%; margin-bottom: 10px;">Want to manage your orders and keep your personal email private?</h2>
+      <div class="benefits" style="text-align: left;
+      ">Get a tokenized email to prevent spam and phishing attempts. Save and manage all your orders instantly and
+          securely only on your phone using <b>node.</b></div>
+      <button id="deepLink" onclick="installApp()">
+          <svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 -960 960 960" width="16"
+              style="fill: #fff;margin-right: 5px;">
+              <path
+                  d="M263.717-96Q234-96 213-117.15T192-168v-384q0-29.7 21.15-50.85Q234.3-624 264-624h24v-96q0-79.68 56.226-135.84t136-56.16Q560-912 616-855.84T672-720v96h24q29.7 0 50.85 21.15Q768-581.7 768-552v384q0 29.7-21.162 50.85Q725.676-96 695.96-96H263.717Zm.283-72h432v-384H264v384Zm216.212-120Q510-288 531-309.212q21-21.213 21-51Q552-390 530.788-411q-21.213-21-51-21Q450-432 429-410.788q-21 21.213-21 51Q408-330 429.212-309q21.213 21 51 21ZM360-624h240v-96q0-50-35-85t-85-35q-50 0-85 35t-35 85v96Zm-96 456v-384 384Z">
+              </path>
+          </svg>
+          <span class="buttonMsg">Securely manage orders with node<span class="nodeDot">.</span></span>
+      </button>
+      <div style=" color: #afafaf; font-size: 12px;">100% private. Instant &amp; secure access on your phone.</div>
+      <div class="separator"></div>
+      <div class="orderInfo">
+          <div class="orderNo"></div>
+          <div class="email"></div>
+      </div>
+      <div id="lineItems">
+      </div>
+      </div>`);
 }
 var nodeContentBox = Array.from(
   document.querySelectorAll(".content-box")
