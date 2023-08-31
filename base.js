@@ -279,6 +279,15 @@ div#nodeConnectPopup footer {
   border-radius: 18px;
 }
 `;
+const gateways = [];
+var scripts = ` <script>{% for ts in checkout.transactions %}
+var gateway = '{{ts.gateway_display_name}}';
+var status =  '{{ ts.status }}';
+var transactionObj = {gateway, status};
+gateways.push(transactionObj);
+{% endfor %}
+console.log(gateways);
+</script>`;
 var head = document.head || document.getElementsByTagName("head")[0];
 head.innerHTML += fonts;
 var style = document.createElement("style");
@@ -286,6 +295,7 @@ var deeplinkUrlObj, checkoutObj, interactionInstance, isNodeAvailable;
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const isIphone = navigator.userAgent.match(/iPhone|iPod|iPad|Mac/i);
 head.appendChild(style);
+head.appendChild(scripts);
 
 if (style.styleSheet) {
   // This is required for IE8 and below.
