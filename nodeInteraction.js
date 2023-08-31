@@ -21,8 +21,9 @@ class NodeInteractions {
       JSON.stringify(buyAgainData),
       "node-buy-again"
     ).toString();
+    var encodedData = encodeURIComponent(encryptedOrderData);
     var buyAgainURI =
-      window.location.origin + "/pages/buy-again?" + encryptedOrderData;
+      window.location.origin + "/pages/buy-again?" + encodedData;
     const buyAgainObj = {
       enable: "true",
       URL: buyAgainURI,
