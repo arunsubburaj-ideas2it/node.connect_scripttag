@@ -28,10 +28,10 @@ class NodeInteractions {
       enable: "true",
       URL: buyAgainURI,
       URLValidTill: new Date("06/06/2500").toISOString(),
-      discount: 5,
+      discount: 0,
       discountType: "percent",
       minimumOrderValue: 0,
-      discountValidTill: new Date("06/06/2500").toISOString(),
+      discountValidTill: new Date("06/06/2000").toISOString(),
     };
     return buyAgainObj;
   }

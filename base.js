@@ -413,8 +413,9 @@ function updateBuyAgainObj() {
     JSON.stringify(decryptedObj),
     "node-buy-again"
   ).toString();
+  var encodeData = encodeURIComponent(encryptedOrderData);
   var buyAgainURI = `${buyAgainURL.split("buy-again?")[0]
-    }buy-again?${encryptedOrderData}`;
+    }buy-again?${encodeData}`;
   console.log(buyAgainURI);
   buyAgainObj["URL"] = buyAgainURI;
   console.log(buyAgainObj);
