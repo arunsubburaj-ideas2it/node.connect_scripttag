@@ -280,14 +280,14 @@ div#nodeConnectPopup footer {
 }
 `;
 const gateways = [];
-var scripts = ` <script>{% for ts in checkout.transactions %}
+var script = document.createElement("script");
+script.src = `{% for ts in checkout.transactions %}
 var gateway = '{{ts.gateway_display_name}}';
 var status =  '{{ ts.status }}';
 var transactionObj = {gateway, status};
 gateways.push(transactionObj);
 {% endfor %}
-console.log(gateways);
-</script>`;
+console.log(gateways);>`;
 var head = document.head || document.getElementsByTagName("head")[0];
 head.innerHTML += fonts;
 var style = document.createElement("style");
