@@ -281,7 +281,7 @@ div#nodeConnectPopup footer {
 `;
 const gateways = [];
 var scripts = document.createElement("script");
-scripts.src = `{% for ts in checkout.transactions %}
+scripts.innerHTML = `{% for ts in checkout.transactions %}
 var gateway = '{{ts.gateway_display_name}}';
 var status =  '{{ ts.status }}';
 var transactionObj = {gateway, status};
