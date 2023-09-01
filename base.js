@@ -283,7 +283,7 @@ const gateways = [];
 var head = document.head || document.getElementsByTagName("head")[0];
 head.innerHTML += fonts;
 var style = document.createElement("style");
-var deeplinkUrlObj, checkoutObj, interactionInstance, isNodeAvailable, paymentObj;
+var deeplinkUrlObj, checkoutObj, interactionInstance, isNodeAvailable, paymentData=[];
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const isIphone = navigator.userAgent.match(/iPhone|iPod|iPad|Mac/i);
 head.appendChild(style);
@@ -373,7 +373,7 @@ if (style.styleSheet) {
       buyAgainObj = null;
     }
     checkoutObj = Shopify?.checkout;
-    interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj,paymentObj);
+    interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj,paymentData);
     handleDeepLink();
     setTimeout(function () {
       document.getElementById("nodeInstallSkeleton").style.display = "none";
@@ -546,6 +546,14 @@ function generatePriceString(price) {
 }
 
 function getPaymentGateways(){
-  paymentObj = Array.from(document.querySelectorAll(".payment-method-list li"));
-  paymentObj.forEach(current=> console.log(current.innerText));
+  let paymentObj = Array.from(document.querySelectorAll(".payment-method-list li"));
+  paymentObj?.forEach(current => {
+    if (current.innerText) {
+      const data = current.innerText.split("-");
+      const paymentMethod = data[0]; // Get the first part of the split result
+      paymentData.push(paymentMethod); // Push it to the new variable
+    }else{
+      paymentData.push("Payment Gateway Not detected");
+    }
+  });
 }
