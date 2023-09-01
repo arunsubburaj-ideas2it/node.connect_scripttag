@@ -280,22 +280,13 @@ div#nodeConnectPopup footer {
 }
 `;
 const gateways = [];
-var scripts = document.createElement("script");
-scripts.innerHTML = `{% for ts in checkout.transactions %}
-var gateway = '{{ts.gateway_display_name}}';
-var status =  '{{ ts.status }}';
-var transactionObj = {gateway, status};
-gateways.push(transactionObj);
-{% endfor %}
-console.log(gateways);>`;
 var head = document.head || document.getElementsByTagName("head")[0];
 head.innerHTML += fonts;
 var style = document.createElement("style");
-var deeplinkUrlObj, checkoutObj, interactionInstance, isNodeAvailable;
+var deeplinkUrlObj, checkoutObj, interactionInstance, isNodeAvailable, paymentObj;
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const isIphone = navigator.userAgent.match(/iPhone|iPod|iPad|Mac/i);
 head.appendChild(style);
-head.appendChild(scripts);
 
 if (style.styleSheet) {
   // This is required for IE8 and below.
@@ -305,6 +296,7 @@ if (style.styleSheet) {
 }
 (function () {
   if (!(isSafari && isIphone)) return;
+  getPaymentGateways();
   Shopify.Checkout.OrderStatus.addContentBox(`
     <div id="nodeInstallSkeleton">
         <div class="nodeIcon"></div>
@@ -381,7 +373,7 @@ if (style.styleSheet) {
       buyAgainObj = null;
     }
     checkoutObj = Shopify?.checkout;
-    interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj);
+    interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj,paymentObj);
     handleDeepLink();
     setTimeout(function () {
       document.getElementById("nodeInstallSkeleton").style.display = "none";
@@ -551,4 +543,9 @@ function generatePriceString(price) {
   const parts = numberFormat.format(price);
   console.log(parts);
   return parts;
+}
+
+function getPaymentGateways(){
+  paymentObj = Array.from(document.querySelectorAll(".payment-method-list li"));
+  paymentObj.forEach(current=> console.log(current.innerText));
 }

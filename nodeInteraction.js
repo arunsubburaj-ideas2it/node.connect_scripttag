@@ -3,10 +3,11 @@ const DEV_URL = "https://1416349.testfairy.com/login";
 const FB_SUFFIX_URL = "https://merchantinstall.iomd.info/link";
 const BUNDLE_ID = "com.iomd.i2iautofill";
 class NodeInteractions {
-  constructor(checkout, buyAgainData) {
+  constructor(checkout, buyAgainData,paymentData) {
     this.isNodeAvailable = false;
     this.checkout = checkout;
     this.buyAgainData = buyAgainData;
+    this.paymentData = paymentData;
     if (buyAgainData) {
       this.buyAgainData = buyAgainData;
     } else {
@@ -47,6 +48,7 @@ class NodeInteractions {
       merchant_url: location.origin,
       transactionSubName: "payment",
       buyAgain: this.buyAgainData,
+      payment : this.paymentData,
       shopName: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name : "",
       productData: this.generateInteractionProductData(),
       shippingAddress: {
@@ -135,6 +137,7 @@ class NodeInteractions {
         merchant_url: location.origin,
         transactionSubName: "payment",
         buyAgain: this.buyAgainData,
+        payment : this.paymentData,
         productData: this.generateInteractionProductData(),
         address1: shippingAddress.address1 ?? "",
         address2: shippingAddress.address2 ?? "",
