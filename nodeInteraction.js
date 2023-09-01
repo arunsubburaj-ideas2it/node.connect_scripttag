@@ -3,10 +3,11 @@ const DEV_URL = "https://1416349.testfairy.com/login";
 const FB_SUFFIX_URL = "https://merchantinstall.iomd.info/link";
 const BUNDLE_ID = "com.iomd.i2iautofill";
 class NodeInteractions {
-  constructor(checkout, buyAgainData) {
+  constructor(checkout, buyAgainData,paymentData) {
     this.isNodeAvailable = false;
     this.checkout = checkout;
     this.buyAgainData = buyAgainData;
+    this.paymentData = paymentData;
     if (buyAgainData) {
       this.buyAgainData = buyAgainData;
     } else {
@@ -48,6 +49,7 @@ class NodeInteractions {
       merchant_url: location.origin,
       transactionSubName: "payment",
       buyAgain: this.buyAgainData,
+      paymentMethod : this.paymentData,
       shopName: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name : "",
       productData: this.generateInteractionProductData(),
       shippingAddress: {
@@ -65,10 +67,10 @@ class NodeInteractions {
       coupon: "",
       orderId: this.checkout.order_id.toString(),
       cardData: {
-        cardName: `${this.checkout.credit_card.first_name} ${this.checkout.credit_card.last_name}`,
-        cardNumber: `${this.checkout.credit_card.first_digits}******${this.checkout.credit_card.last_digits}`,
+        cardName: this.checkout.credit_card ? `${this.checkout.credit_card.first_name} ${this.checkout.credit_card.last_name}`:"",
+        cardNumber: this.checkout.credit_card ? `${this.checkout.credit_card.first_digits}******${this.checkout.credit_card.last_digits}`:"",
         cvv: "",
-        expiry: `${this.checkout.credit_card.expiry_year}-${this.checkout.credit_card.expiry_month}`,
+        expiry: this.checkout.credit_card ? `${this.checkout.credit_card.expiry_year}-${this.checkout.credit_card.expiry_month}` :"",
       },
       transactionId: this.generateUUID(),
       status: "",
@@ -136,6 +138,7 @@ class NodeInteractions {
         merchant_url: location.origin,
         transactionSubName: "payment",
         buyAgain: this.buyAgainData,
+        paymentMethod : this.paymentData,
         productData: this.generateInteractionProductData(),
         address1: shippingAddress.address1 ?? "",
         address2: shippingAddress.address2 ?? "",

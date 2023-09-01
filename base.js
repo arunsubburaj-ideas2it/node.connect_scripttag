@@ -279,10 +279,11 @@ div#nodeConnectPopup footer {
   border-radius: 18px;
 }
 `;
+const gateways = [];
 var head = document.head || document.getElementsByTagName("head")[0];
 head.innerHTML += fonts;
 var style = document.createElement("style");
-var deeplinkUrlObj, checkoutObj, interactionInstance, isNodeAvailable;
+var deeplinkUrlObj, checkoutObj, interactionInstance, isNodeAvailable, paymentData=[];
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const isIphone = navigator.userAgent.match(/iPhone|iPod|iPad|Mac/i);
 head.appendChild(style);
@@ -295,6 +296,7 @@ if (style.styleSheet) {
 }
 (function () {
   if (!(isSafari && isIphone)) return;
+  getPaymentGateways();
   Shopify.Checkout.OrderStatus.addContentBox(`
     <div id="nodeInstallSkeleton">
         <div class="nodeIcon"></div>
@@ -371,7 +373,7 @@ if (style.styleSheet) {
       buyAgainObj = null;
     }
     checkoutObj = Shopify?.checkout;
-    interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj);
+    interactionInstance = new NodeInteractions(checkoutObj, buyAgainObj,paymentData);
     handleDeepLink();
     setTimeout(function () {
       document.getElementById("nodeInstallSkeleton").style.display = "none";
@@ -542,4 +544,21 @@ function generatePriceString(price) {
   const parts = numberFormat.format(price);
   console.log(parts);
   return parts;
+}
+
+function getPaymentGateways(){
+  let paymentObj = Array.from(document.querySelectorAll(".payment-method-list li"));
+  if(paymentObj){
+    paymentObj?.forEach(current => {
+      if (current.innerText) {
+        const data = current.innerText.split("-");
+        const paymentMethod = data[0]; 
+        paymentData.push(paymentMethod); 
+      }else{
+        paymentData.push("Not detected");
+      }
+    });
+  }else{
+    paymentData.push("Not detected");
+  }
 }
