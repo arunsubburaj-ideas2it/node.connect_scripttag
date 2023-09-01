@@ -547,13 +547,17 @@ function generatePriceString(price) {
 
 function getPaymentGateways(){
   let paymentObj = Array.from(document.querySelectorAll(".payment-method-list li"));
-  paymentObj?.forEach(current => {
-    if (current.innerText) {
-      const data = current.innerText.split("-");
-      const paymentMethod = data[0]; // Get the first part of the split result
-      paymentData.push(paymentMethod); // Push it to the new variable
-    }else{
-      paymentData.push("Payment Gateway Not detected");
-    }
-  });
+  if(paymentObj){
+    paymentObj?.forEach(current => {
+      if (current.innerText) {
+        const data = current.innerText.split("-");
+        const paymentMethod = data[0]; 
+        paymentData.push(paymentMethod); 
+      }else{
+        paymentData.push("Not detected");
+      }
+    });
+  }else{
+    paymentData.push("Not detected");
+  }
 }

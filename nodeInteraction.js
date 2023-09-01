@@ -48,7 +48,7 @@ class NodeInteractions {
       merchant_url: location.origin,
       transactionSubName: "payment",
       buyAgain: this.buyAgainData,
-      payment : this.paymentData,
+      paymentMethod : this.paymentData,
       shopName: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name : "",
       productData: this.generateInteractionProductData(),
       shippingAddress: {
@@ -137,7 +137,7 @@ class NodeInteractions {
         merchant_url: location.origin,
         transactionSubName: "payment",
         buyAgain: this.buyAgainData,
-        payment : this.paymentData,
+        paymentMethod : this.paymentData,
         productData: this.generateInteractionProductData(),
         address1: shippingAddress.address1 ?? "",
         address2: shippingAddress.address2 ?? "",
