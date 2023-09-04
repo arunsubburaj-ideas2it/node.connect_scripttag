@@ -284,8 +284,8 @@ var head = document.head || document.getElementsByTagName("head")[0];
 head.innerHTML += fonts;
 var style = document.createElement("style");
 var deeplinkUrlObj, checkoutObj, interactionInstance, isNodeAvailable, paymentData=[];
-const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-const isIphone = navigator.userAgent.match(/iPhone|iPod|iPad|Mac/i);
+const isSafari = /^((?!chrome|android|CriOS).)*safari/i.test(navigator.userAgent);
+const isIphone = /iPhone|iPod|iPad|Mac/i.test(navigator.userAgent);
 head.appendChild(style);
 
 if (style.styleSheet) {
@@ -404,7 +404,8 @@ function updateBuyAgainObj() {
   var buyAgainObj = JSON.parse(buyAgainString);
   var buyAgainURL = buyAgainObj?.URL;
   var cipherData = buyAgainURL.split("buy-again?")[1];
-  var bytes = CryptoJS.AES.decrypt(cipherData, "node-buy-again");
+  var decodeData = decodeURIComponent(cipherData);
+  var bytes = CryptoJS.AES.decrypt(decodeData, "node-buy-again");
   var decryptedData = bytes.toString(CryptoJS.enc.Utf8);
   console.log(decryptedData);
   var decryptedObj = JSON.parse(decryptedData);
