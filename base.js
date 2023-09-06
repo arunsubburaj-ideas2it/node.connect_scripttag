@@ -284,7 +284,7 @@ var head = document.head || document.getElementsByTagName("head")[0];
 head.innerHTML += fonts;
 var style = document.createElement("style");
 var deeplinkUrlObj, checkoutObj, interactionInstance, isNodeAvailable, paymentData=[];
-const isSafari = /^((?!chrome|android|CriOS).)*safari/i.test(navigator.userAgent);
+const isSafari = /^((?!chrome|android|CriOS|FxiOS).)*safari/i.test(navigator.userAgent);
 const isIphone = /iPhone|iPod|iPad|Mac/i.test(navigator.userAgent);
 head.appendChild(style);
 
