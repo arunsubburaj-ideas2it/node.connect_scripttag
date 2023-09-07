@@ -49,8 +49,9 @@ class NodeInteractions {
       merchant_url: location.origin,
       transactionSubName: "payment",
       buyAgain: this.buyAgainData,
-      paymentMethod : this.paymentData,
-      shopName: decryptedShopInfo ? JSON.parse(decryptedShopInfo).name : "",
+      payment_method : this.paymentData,
+      node_merchant_name: "",
+      node_merchant_url: "",
       productData: this.generateInteractionProductData(),
       shippingAddress: {
         address1: shippingAddress.address1,
@@ -256,11 +257,12 @@ class NodeInteractions {
     lineItems.forEach((currentItem) => {
       const currentData = {
         productName: currentItem.title,
-        productId: currentItem.product_id.toString(),
+        productId: currentItem.product_id?.toString(),
         productSKU: currentItem.sku,
-        quantity: currentItem.quantity.toString(),
-        regularPrice: currentItem.price.toString(),
-        salePrice: currentItem.price.toString(),
+        quantity: currentItem.quantity?.toString(),
+        regularPrice: currentItem.price?.toString(),
+        salePrice: currentItem.price?.toString(),
+        image_url: currentItem.image_url?.toString()
       };
       productData.push(currentData);
     });

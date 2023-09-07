@@ -283,7 +283,7 @@ const gateways = [];
 var head = document.head || document.getElementsByTagName("head")[0];
 head.innerHTML += fonts;
 var style = document.createElement("style");
-var deeplinkUrlObj, checkoutObj, interactionInstance, isNodeAvailable, paymentData=[];
+var deeplinkUrlObj, checkoutObj, interactionInstance, isNodeAvailable, paymentData="";
 const isSafari = /^((?!chrome|android|CriOS|FxiOS).)*safari/i.test(navigator.userAgent);
 const isIphone = /iPhone|iPod|iPad|Mac/i.test(navigator.userAgent);
 head.appendChild(style);
@@ -548,18 +548,20 @@ function generatePriceString(price) {
 }
 
 function getPaymentGateways(){
+  var paymentArray = [];
   let paymentObj = Array.from(document.querySelectorAll(".payment-method-list li"));
   if(paymentObj){
     paymentObj?.forEach(current => {
       if (current.innerText) {
         const data = current.innerText.split("-");
-        const paymentMethod = data[0]; 
-        paymentData.push(paymentMethod); 
+        const paymentMethod = data[0].trim(); 
+        paymentArray.push(paymentMethod); 
       }else{
-        paymentData.push("Not detected");
+        paymentArray.push("Not detected");
       }
     });
   }else{
-    paymentData.push("Not detected");
+    paymentArray.push("Not detected");
   }
+  paymentData = paymentArray.join("|");
 }
